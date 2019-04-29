@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>mod_proctitle | Documentation</title>
+    <meta name="description" content="CloudLinux Documentation">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <link rel="preload" href="/assets/css/0.styles.ff8f8372.css" as="style"><link rel="preload" href="/assets/js/app.04c003d9.js" as="script"><link rel="preload" href="/assets/js/22.5432e51d.js" as="script"><link rel="prefetch" href="/assets/js/10.d789855c.js"><link rel="prefetch" href="/assets/js/11.391398ef.js"><link rel="prefetch" href="/assets/js/12.62c0c26f.js"><link rel="prefetch" href="/assets/js/13.e08d49fe.js"><link rel="prefetch" href="/assets/js/14.d89642bd.js"><link rel="prefetch" href="/assets/js/15.a53a3225.js"><link rel="prefetch" href="/assets/js/16.2c71465b.js"><link rel="prefetch" href="/assets/js/17.b94d3579.js"><link rel="prefetch" href="/assets/js/18.a1915651.js"><link rel="prefetch" href="/assets/js/19.8c75e389.js"><link rel="prefetch" href="/assets/js/20.8c97966c.js"><link rel="prefetch" href="/assets/js/21.b81b0df1.js"><link rel="prefetch" href="/assets/js/23.9e71f1cf.js"><link rel="prefetch" href="/assets/js/24.d10842d6.js"><link rel="prefetch" href="/assets/js/25.c99eda75.js"><link rel="prefetch" href="/assets/js/26.89c39f34.js"><link rel="prefetch" href="/assets/js/27.81b07469.js"><link rel="prefetch" href="/assets/js/28.5bce05ea.js"><link rel="prefetch" href="/assets/js/29.237a1719.js"><link rel="prefetch" href="/assets/js/3.70272519.js"><link rel="prefetch" href="/assets/js/4.e4d73700.js"><link rel="prefetch" href="/assets/js/5.c4b8de59.js"><link rel="prefetch" href="/assets/js/6.33587da0.js"><link rel="prefetch" href="/assets/js/7.38f6b58b.js"><link rel="prefetch" href="/assets/js/8.981da5aa.js"><link rel="prefetch" href="/assets/js/9.9dbef1e4.js"><link rel="prefetch" href="/assets/js/vendors~docsearch.a71a1da2.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.ff8f8372.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/logo.svg" alt="Documentation" class="logo"> <span class="site-name site-name--documentation can-hide">Documentation</span></a> <div class="search-box"><input aria-label="Search" placeholder="Search" autocomplete="off" spellcheck="false" value="Search"> <!----></div> <div class="links" style="max-width:nullpx;"><a href="https://cloudlinux.com/trial" target="_blank" class="btn">
+      Try Free
+    </a> <!----></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><!---->  <ul class="sidebar-links"><li><div class="sidebar-group first"><div class="sidebar-heading open"><span>Content</span> <!----></div> <ul class="sidebar-group-items"><li><a href="/cloudlinux_installation/" class="sidebar-link">Installation</a></li><li><a href="/limits/" class="sidebar-link">Limits</a></li><li><a href="/command-line_tools/" class="sidebar-link">Command-line Tools</a></li><li><a href="/lve_manager/" class="sidebar-link">LVE Manager</a></li><li><a href="/reseller_limits/" class="sidebar-link">Reseller Limits</a></li><li><a href="/lve-stats_2/" class="sidebar-link">LVE-Stats 2</a></li><li><a href="/cagefs/" class="sidebar-link">CageFS</a></li><li><a href="/mysql_governor/" class="sidebar-link">MySQL Governor</a></li><li><a href="/php_selector/" class="sidebar-link">PHP Selector</a></li><li><a href="/python_and_ruby_selector/" class="sidebar-link">Python and Ruby Selector</a></li><li><a href="/node_js_selector/" class="sidebar-link">Node.js Selector</a></li><li><a href="/inodes_limits/" class="sidebar-link">inodes</a></li><li><a href="/kernel_settings/" class="sidebar-link">Kernel Settings</a></li><li><a href="/apache_mod_lsapi/" class="sidebar-link">Apache mod_lsapi PRO</a></li><li><a href="/cloudlinux-fchange/" class="sidebar-link">File Change API</a></li><li><a href="/mod_proctitle/" class="active sidebar-link">mod_proctitle</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/mod_proctitle/#how-to-read-mod-proctitle-information" class="sidebar-link">How to Read mod_proctitle Information</a></li><li class="sidebar-sub-header"><a href="/mod_proctitle/#tuning-parameters" class="sidebar-link">Tuning Parameters</a></li></ul></li><li><a href="/additional_packages/" class="sidebar-link">Additional Packages</a></li><li><a href="/integration_guide/" class="sidebar-link">Integration Guide</a></li><li><a href="/partner_portal/" class="sidebar-link">Partner Portal</a></li><li><a href="/cloudlinux_network/" class="sidebar-link">CloudLinux Network</a></li><li><a href="/cloudlinux_whmcs_plugin/" class="sidebar-link">CloudLinux WHMCS Plugin</a></li><li><a href="/deprecated/" class="sidebar-link">Deprecated</a></li><li><a href="/hardware_compatibility/" class="sidebar-link">Hardware Compatibility</a></li><li><a href="/cloudlinux_life-cycle/" class="sidebar-link">CloudLinux Life cycle</a></li></ul></div></li></ul> </div> <div class="page"> <div class="breadcrumb-wrapper page-breadcrumb" data-v-5e0e0acf><span class="breadcrumb-title" data-v-5e0e0acf>Documentation:</span> <a href="/mod_proctitle/" class="breadcrumb router-link-exact-active router-link-active" data-v-5e0e0acf>
+    mod_proctitle
+  </a></div> <div class="page-nav-wrapper"><div class="page-nav"><a href="/cloudlinux-fchange/" class="link prev">
+      ←
+    </a> <a href="/additional_packages/" class="link">
+      →
+    </a></div></div> <div class="content"><h1 id="mod-proctitle"><a href="#mod-proctitle" aria-hidden="true" class="header-anchor">#</a> mod_proctitle</h1> <p>mod_proctitle is a module for gathering URL information per request. It is available only for Apache 2.4 now.</p> <p><strong>For installation:</strong></p> <p>cPanel EasyApache 3 and non cPanel ( <em>CloudLinux 7 only for non cPanel</em> ):</p> <div class="notranslate"><div class="language- extra-class"><pre class="language-text"><code># yum install mod_proctitle --enablerepo=cloudlinux-updates-testing
+# service httpd restart
+</code></pre></div></div> <p>cPanel EasyApache 4:</p> <div class="notranslate"><div class="language- extra-class"><pre class="language-text"><code># yum install ea-apache24-mod_proctitle
+# service httpd restart
+</code></pre></div></div>
+DirectAdmin:
+<div class="notranslate"><div class="language- extra-class"><pre class="language-text"><code># cd /usr/local/directadmin/custombuild
+# ./build update
+# ./build mod_procticle
+</code></pre></div></div> <h2 id="how-to-read-mod-proctitle-information"><a href="#how-to-read-mod-proctitle-information" aria-hidden="true" class="header-anchor">#</a> How to Read mod_proctitle Information</h2> <p><strong>How to read information gathered by the module</strong></p> <p>For reading information saved by module use the following script (the script is not in the package):
+</p><div class="notranslate"><p></p> <div class="language- extra-class"><pre class="language-text"><code># CAT PROCTITLES_INFO.SH
+#!/BIN/BASH
+
+HTTPD=HTTPD 
+
+FOR PID IN `/USR/BIN/PGREP $HTTPD`; DO
+    FOR TID IN `LS /PROC/$PID/TASK`; DO
+		FOUND=NO
+		FOR SHM IN `LS /DEV/SHM/APACHE_TITLE_SHM_${PID}_${TID}_* 2&gt;/DEV/NULL`; DO
+			FOUND=YES
+			TITLE=`/USR/BIN/TR -D '\0' &lt; $SHM`
+			THREAD_ID=`/BIN/BASENAME &quot;${SHM}&quot; | SED &quot;S/APACHE_TITLE_SHM_${PID}_${TID}_//&quot;`
+			ECHO &quot;$PID.$TID - $THREAD_ID - $TITLE&quot;
+		BREAK
+		DONE
+	IF [ &quot;$FOUND&quot; = &quot;NO&quot; ]; THEN
+		ECHO &quot;$PID.$TID NOT FOUND&quot;
+	FI
+    DONE
+DONE
+</code></pre></div></div>
+Here are the examples of saved by module:
+<div class="notranslate"><div class="language- extra-class"><pre class="language-text"><code># sh proctitles_info.sh
+571258.571258 NOT FOUND
+571300.571300 NOT FOUND
+571303.571303 - 000000000000000 - 1466513333.6 test.cloudlinux.com GET /1.php HTTP/1.1
+571304.571304 - 000000000000000 - 1466513335.3 test.cloudlinux.com GET /1.php HTTP/1.1
+571305.571305 - 000000000000000 - httpd
+571306.571306 - 000000000000000 - httpd
+571307.571307 - 000000000000000 - httpd
+571372.571372 - 000000000000000 - httpd
+571374.571374 - 000000000000000 - httpd
+
+Item info:
+[pid].[tid] - [posix thread id] - [request info]
+</code></pre></div></div> <p>Request information can contain:</p> <p><span class="notranslate"><em>NOT FOUND</em></span> - means that process of Apache doesn't handle requests.<br> <span class="notranslate"><em>httpd</em></span> - request is active and waiting for new connection.<br> <span class="notranslate"><em>[seconds].[tenths of second] [host] [METHOD] [URL] [PROTOCOL]</em></span></p> <h2 id="tuning-parameters"><a href="#tuning-parameters" aria-hidden="true" class="header-anchor">#</a> Tuning Parameters</h2> <p><strong>Module parameters for tuning</strong></p> <table><thead><tr><th></th> <th></th></tr></thead> <tbody><tr><td>WatchHandlers</td> <td>List of handlers for monitoring (httpd.conf, virtualhost).</td></tr> <tr><td>ProctitleUseFilter On/Off</td> <td>Use old method of cleaning information or new via filter (for prefork better to use <span class="notranslate"> Off </span> )</td></tr></tbody></table></div> <div class="page-edit"><!----> <!----></div> </div> <div class="footer" data-v-20b89de8><div data-v-20b89de8><a href="https://cloudlinux.com" data-v-20b89de8><img src="/assets/img/we-are-cloudlinux.783ed390.svg" alt="We are Cloudlinux" data-v-20b89de8></a></div> <div class="footer-company-title" data-v-20b89de8>2019. CloudLinux Inc</div> <div data-v-20b89de8><div data-v-20b89de8><a href="https://cloudlinux.zendesk.com/hc/sections/115001344329-How-do-I" target="_blank" data-v-20b89de8>How to</a></div><div data-v-20b89de8><a href="https://www.cloudlinux.com/getting-started-with-cloudlinux-os" target="_blank" data-v-20b89de8>Getting started</a></div><div data-v-20b89de8><a href="https://cloudlinux.zendesk.com/hc/en-us/requests/new" target="_blank" data-v-20b89de8>Contact support</a></div><div data-v-20b89de8><a href="https://www.cloudlinux.com/blog" target="_blank" data-v-20b89de8>Blog</a></div></div> <div class="social" data-v-20b89de8><span class="footer-social-text" data-v-20b89de8></span> <a href="https://www.facebook.com/cloudlinux/" target="_blank" data-v-20b89de8><img src="/fb.png" class="footer-social-logo" data-v-20b89de8></a><a href="https://twitter.com/cloudlinuxos/" target="_blank" data-v-20b89de8><img src="/tw.png" class="footer-social-logo" data-v-20b89de8></a><a href="https://linkedin.com/company/cloudlinux" target="_blank" data-v-20b89de8><img src="/in.png" class="footer-social-logo" data-v-20b89de8></a><a href="https://www.youtube.com/channel/UCZ3YMHWnMP7TaxlXVay5-aw" target="_blank" data-v-20b89de8><img src="/ytube.png" class="footer-social-logo" data-v-20b89de8></a></div></div> <!----></div></div>
+    <script src="/assets/js/app.04c003d9.js" defer></script><script src="/assets/js/22.5432e51d.js" defer></script>
+  </body>
+</html>
