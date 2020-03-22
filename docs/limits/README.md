@@ -45,6 +45,10 @@ Bellow you can find recommendations for your typical shared hosting setup. The r
 
 ## Understanding limits
 
+* [Checking if LVE is installed](/limits/#checking-if-lve-is-installed)
+* [Controlling LVE limits](/limits/#controlling-lve-limits)
+* [Checking LVE usage](/limits/#checking-lve-usage)
+
 LVE is a kernel level technology developed by the CloudLinux team. The technology has common roots with container based virtualization and uses cgroups in its latest incarnation. It is lightweight and transparent. The goal of LVE is to make sure that no single web site can bring down your web server.
 
 Today, a single site can consume all <span class="notranslate"> CPU, IO, Memory</span> resources or Apache processes - and bring the server to a halt. LVE prevents that. It is done via collaboration of Apache module, PAM module and kernel.
@@ -207,7 +211,9 @@ When LVE goes over physical memory limit, CloudLinux will first free up memory u
 
 ### Troubleshooting
 
-#### **Checking personal users disk cache (If lveinfo shows memory usage but there are no processes there)**
+* [Checking personal users disk cache (If lveinfo shows memory usage but there are no processes there)](/limits/#checking-personal-users-disk-cache-if-lveinfo-shows-memory-usage-but-there-are-no-processes-there)
+
+#### Checking personal users disk cache (If lveinfo shows memory usage but there are no processes there)
 
 If you see no processes under some user, but lve manager keeps telling it is using some memory, then most probably memory is taken by users disk cache. To check personal users disk cache (if lveinfo shows memory usage but not processes there):
 
@@ -393,6 +399,10 @@ Network limits are supported only for processes inside LVE. By default it does n
 
 ## Limits validation
 
+* [Exceptions list (validation is not supported)](/limits/#exceptions-list-validation-is-not-supported)
+* [Existing limits validation](/limits/#existing-limits-validation)
+* [Best practice](/limits/#best-practice)
+
 Starting from <span class="notranslate">**lve-utils**</span> **version 3.1-1**, the validation of EP and NPROC limits is supported. If an administrator sets the NPROC limit less than (EP + 15), the following warning is shown:
 
 <div class="notranslate">
@@ -482,7 +492,7 @@ Set NPROC limit greater than (EP + 15).
 |Apache / FCGID | Yes | Yes | Yes | Yes | Yes | Yes | Yes|
 |Apache / CGI | Yes | Yes | Yes | Yes | Yes | Yes | Yes|
 |Apache / PHP-FPM | Yes<sup> 3</sup> | Yes | Yes | Yes | Yes | Yes<sup> 3</sup> | No|
-|Apache / mod_php | Yes | No | Yes | Yes | Yes | No | No|
+|Apache / mod_php (DSO) | Yes | No | Yes | Yes | Yes | No | No|
 |Apache / mod_ruid2 | Yes | No | Yes | Yes | Yes | No | No|
 |Apache / MPM ITK | Yes | No | Yes | Yes | Yes | Yes<sup> 1</sup> | No|
 |LiteSpeed | Yes | Yes<sup> 2</sup> | Yes | Yes | Yes | Yes | Yes|
@@ -497,4 +507,8 @@ Set NPROC limit greater than (EP + 15).
 
 :::tip Note
 Please note that mod_lsapi does not work when php-fpm is enabled because php-fpm is also a PHP Handler just as mod_lsapi.
+:::
+
+:::warning Note
+LiteSpeed is not compatible with <span class="notranslate">`mod_lsapi`</span> so we recommend it being disabled before installing LiteSpeed. The reason is that all the functionality that <span class="notranslate">`mod_lsapi`</span> offers is already built directly in LiteSpeed and by using <span class="notranslate">`mod_lsapi`</span> it can cause issues and performance decreases.
 :::

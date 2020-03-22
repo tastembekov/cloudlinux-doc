@@ -14,6 +14,9 @@ The list of the commands (CLI) you can use to manage CloudLinux OS components.
 
 ## CageFS
 
+* [Running command inside CageFS](/command-line_tools/#running-command-inside-cagefs)
+* [Sanity check](/command-line_tools/#sanity-check)
+
 `cagefsctl` is used to manage CageFS. It allows initializing and updating CageFS, as well as enabling/disabling CageFS for individual users.
 
 Use the following syntax to manage CageFS:
@@ -188,6 +191,24 @@ In case if at least one of the checks resulted neither <span class="notranslate"
 
 
 ## LVE-stats 2
+
+* [lveinfo](/command-line_tools/#lveinfo)
+* [lvechart](/command-line_tools/#lvechart)
+* [dbgovchart](/command-line_tools/#dbgovchart)
+* [lve-read-snapshot](/command-line_tools/#lve-read-snapshot)
+* [lve-create-db](/command-line_tools/#lve-create-db)
+* [cloudlinux-top](/command-line_tools/#cloudlinux-top)
+  * [Usage](/command-line_tools/#usage)
+  * [Output format](/command-line_tools/#output-format)
+  * [Units of measurement](/command-line_tools/#units-of-measurement)
+  * [Errors handling](/command-line_tools/#errors-handling)
+  * [Examples](/command-line_tools/#examples)
+* [cloudlinux-statistics](/command-line_tools/#cloudlinux-statistics)
+  * [Usage](/command-line_tools/#usage-2)
+  * [Output format](/command-line_tools/#output-format-2)
+  * [Units of measurement](/command-line_tools/#units-of-measurement-2)
+  * [Errors handling](/command-line_tools/#errors-handling-2)
+  * [Examples](/command-line_tools/#examples-2)
 
 | | |
 |-|-|
@@ -977,6 +998,11 @@ The format of the error message is the same as in the other <span class="notrans
 
 ## MySQL Governor
 
+* [dbtop](/command-line_tools/#dbtop)
+* [dbctl](/command-line_tools/#dbctl)
+* [lveinfo --dbgov](/command-line_tools/#lveinfo-dbgov)
+* [dbgovchart](/command-line_tools/#dbgovchart-2)
+
 * <span class="notranslate">`dbtop`</span> monitors MySQL usage on per user bases.
 * <span class="notranslate">`dbctl`</span> is a command line tool to manage <span class="notranslate">DB Governor</span> configuration.
 * <span class="notranslate">`lveinfo --dbgov`</span> provides historical information about usage and customer restrictions. 
@@ -1178,102 +1204,45 @@ $dbctl list --bb
 
 #### lveinfo --dbgov
 
-
-<span class="notranslate"> lveinfo </span> tool is a part of <span class="notranslate"> lve-stats </span> package. It was extended to collect historical information about MySQL usage.
-
-<span class="notranslate"> $ lveinfo --dbgov --help </span>
 <div class="notranslate">
 
 ```
-Displays information about historical Db Governor usage
-Usage: lveinfo [OPTIONS] 
-
--h --help              : this help run report from date and time in YYYY-MM-DD HH:MM format if not present last 10 mscreen
--v, --version          : version number
--f, --from=            : inutes are assumed
--t, --to=              : run report up to date and time in YYYY-MM-DD HH:MM format
-      if not present, reports results up to now
-	  --period=          : time period
-      usage            : specify minutes with m,  h - hours, days with d, and values:
-	  : today, yesterday; 5m - last 5 minutes, 4h -- last four hours,
-	  : 2d - last 2 days, as well as today
--o, --order-by=        : orders results by one of the following:
-      con              : average connections
-      cpu              : average CPU usage
-      read             : average READ usage
-      write            : average WRITE usage
--u, --user=            : mysql username
--l, --limit=           : max number of results to display, 10 by default
--c, --csv              : display output in CSV format
--b, --format           : show only specific fields into output
-      available values:
-      ts               : timestamp records
-      username         : user name
-      con              : average connections
-      cpu              : average CPU usage
-      read             : average READ usage
-      write            : average WRITE usage
-      lcpu             : CPU limit
-      lread            : READ limit
-      lwrite           : WRITE limit
-	  --show-all         : full output (show all limits); brief output is default 
-	  
--o, --order-by=        : orders results by one of the following:
-      ts               : timestamp records
-      username         : user name
-      max_sim_req      : max simultaneous requests
-      sum_cpu          : average CPU usage
-      sum_write        : average WRITE usage
-      sum_read         : average READ usage
-      num_of_rest      : number of restricts
-      limit_cpu_end    : limit CPU on period end
-      limit_read_end   : limit READ on period end
-      limit_write_end  : limit WRITE on period end
-	  --id=              : LVE id -- will display record only for that LVE id
-	  -u, --user=            : Use username instead of LVE id, and show only record for that user
-	  -l, --limit=           : max number of results to display, 10 by default
-	  -c, --csv              : display output in CSV format
-	  -b, --by-usage         : show LVEs with usage (averaged or max) within 90% percent of the limit
-      available values:
-      sum_cpu          : average CPU usage
-      sum_write        : average WRITE usage
-      sum_read         : average READ usage
-      num_of_rest      : number of restricts
-      limit_cpu_end    : limit CPU on period end
-      limit_read_end   : limit READ on period end
-      limit_write_end  : limit WRITE on period end
-	  --show-all         : full output (show all limits); brief output is default 
-	  
-	  TS                     : timestamp records
-	  USER                   : user name
-	  CPU                    : average CPU usage
-	  READ                   : average READ usage
-	  WRITE                  : average WRITE usage
-	  CON                    : average connections
-	  lCPU                   : CPU limit
-	  lREAD                  : READ limit
-	  lWRITE                 : WRITE limit
-	  RESTRICT               : C-cpu restrict, R- read restrict, W- write restrict
+$ lveinfo --dbgov --help
 ```
 </div>
 
-Example:
+Displays information about DB Governor historical usage
+
+**Usage**:
+
 <div class="notranslate">
 
 ```
-root@cpanel1 [~/ttttt]# lveinfo --dbgov --user=dbgov --period=1d --limit=10
-TS                   USER   CPU     READ    WRITE   CON     lCPU    lREAD   lWRITE   RESTRICT  
-2012-12-06 11:14:49  dbgov   9       0.0     0.0     1       90      1000    1000                
-2012-12-06 11:13:49  dbgov   9       0.0     0.0     1       90      1000    1000                
-2012-12-06 11:12:49  dbgov   9       0.0     0.0     1       90      1000    1000                
-2012-12-06 11:11:49  dbgov   9       0.0     0.0     1       90      1000    1000                
-2012-12-06 11:10:49  dbgov   9       0.0     0.0     1       90      1000    1000                
-2012-12-06 11:09:49  dbgov   90      0.0     0.0     1       90      1000    1000     C          
-2012-12-06 11:08:49  dbgov   0       0.0     0.0     0       400     1000    1000                
-2012-12-06 11:07:49  dbgov   0       0.0     0.0     0       400     1000    1000                
-2012-12-06 11:06:49  dbgov   0       0.0     0.0     0       400     1000    1000   
+lveinfo [OPTIONS]
 ```
 </div>
+
+**Optional arguments**:
+
+| | |
+|-|-|
+|`-h`, <span class="notranslate">`--help`</span>|show this help message and exit|
+|<span class="notranslate">`-u USER`</span>, <span class="notranslate">`--user USER`</span>|system user name|
+|<span class="notranslate">`--id ID`</span>|user id|
+|<span class="notranslate">`-l LIMIT`</span>, <span class="notranslate">`--limit LIMIT`</span>|max number of results to display, if 0 – no limit|
+|<span class="notranslate">`--by-usage ALIAS [ALIAS ...]`</span>|show LVEs with usage (averaged) within 90 percent of the limit;<br>available values:<br><span class="notranslate">`COLUMN_NAME`–`ALIAS`</span>–DESCRIPTION<br><span class="notranslate">`cpu`–`CPU`–`average CPU usage`</span><br><span class="notranslate">`io`–`IO`–`average IO usage`</span>|
+|<span class="notranslate">`-p 0..100`</span>, <span class="notranslate">`--percentage 0..100`</span>|defines percentage for the <span class="notranslate">`--by-usage`</span> option; default is 90|
+|<span class="notranslate">`-o ALIAS`</span>, <span class="notranslate">`--order-by ALIAS`</span>|orders results by one of the following:<br><span class="notranslate">`ALIAS`</span> – DESCRIPTION<br><span class="notranslate">`con`</span> – average connections (deprecated)<br><span class="notranslate">`cpu`</span> – average CPU usage<br><span class="notranslate">`read`</span> – average READ usage<br><span class="notranslate">`write`</span> – average WRITE usage<br><span class="notranslate">`io`</span> – average READ+WRITE usage|
+|<span class="notranslate">`-b ALIAS [ALIAS ...]`</span>, <span class="notranslate">`--format ALIAS [ALIAS ...]`</span>|show only specific fields into output:<br>COLUMN_NAME – <span class="notranslate">`ALIAS`</span> – DESCRIPTION<br><span class="notranslate">`ts`</span> – <span class="notranslate">`TS`</span> – timestamp records<br><span class="notranslate">`username`</span> – <span class="notranslate">`USER`</span> – user name<br><span class="notranslate">`id`</span> – <span class="notranslate">`ID`</span>user id</span><br><span class="notranslate">`cpu`</span> – <span class="notranslate">`CPU`</span> – average CPU usage<br><span class="notranslate">`read`</span> – <span class="notranslate">`READ`</span> – average READ usage<br><span class="notranslate">`write`</span> – <span class="notranslate">`WRITE`</span> – average WRITE usage<br><span class="notranslate">`con`</span> – <span class="notranslate">`CON`</span> – average connections (deprecated)<br><span class="notranslate">`lcpu`</span> – <span class="notranslate">`lCPU`</span> – CPU limit<br><span class="notranslate">`lread`</span> – <span class="notranslate">`lREAD`</span> – READ limit<br><span class="notranslate">`lwrite`</span> – <span class="notranslate">`lWRITE`</span> – WRITE limit<br><span class="notranslate">`-`</span> – <span class="notranslate">`RESTRICT`</span> – <span class="notranslate">`C`</span> - CPU restrict, <span class="notranslate">`R`</span> - read restrict, <span class="notranslate">`W`</span> - write restrict |
+|<span class="notranslate">`--show-all`</span>|full output (show all limits); brief output is default|
+|<span class="notranslate">`--server_id SERVER_ID`</span>, <span class="notranslate">`--server-id SERVER_ID`</span>|used with central database for multiple servers, default is <span class="notranslate">`2d823047-a`</span>|
+|<span class="notranslate">`--time-unit TIME_UNIT`</span>|time step for grouping statistic in minutes; 1 min. by default; can use <span class="notranslate">`m`,`h`,`d`</span> suffixes or can use <span class="notranslate">`dyn[amic]`</span> for using in the <span class="notranslate">`v1`</span> mode; for example: <span class="notranslate">`1h`</span> or <span class="notranslate">`1h30m`</span> or <span class="notranslate">`1d12h`</span>|
+|<span class="notranslate">`-c [PATH]`</span>, <span class="notranslate">`--csv [PATH]`</span>|save statistics in CSV format; <span class="notranslate">`-`</span> by default (output to screen)|
+|<span class="notranslate">`-j`</span>, <span class="notranslate">`--json`</span>|display output in JSON format|
+|<span class="notranslate">`-f FROM`</span>, <span class="notranslate">`--from FROM`</span>|run report from date and time in the <span class="notranslate">`[YY]YY-MM-DD[ HH:MM]`</span> format; if not present, the last 10 minutes are assumed|
+|<span class="notranslate">`-t TO`</span>, <span class="notranslate">`--to TO`</span>|run a report up to date and time in the <span class="notranslate">`[YY]YY-MM-DD[ HH:MM]`</span> format; if not present, reports results up to now|
+|<span class="notranslate">`--period PERIOD`</span>|time period; specify minutes with <span class="notranslate">`m`</span>, hours with <span class="notranslate">`h`</span>, days with <span class="notranslate">`d`</span> and values: <span class="notranslate">`today`, `yesterday`; `5m`</span> - last 5 minutes, <span class="notranslate">`4h`</span> - last four hours, <span class="notranslate">`2d`</span> - last 2 days, as well as <span class="notranslate">`today`</span>|
+
 
 #### dbgovchart
 
@@ -1309,6 +1278,8 @@ Charts examples:
 
 
 ## PHP Selector
+
+* [selectorctl](/command-line_tools/#selectorctl)
 
 | | |
 |-|-|
@@ -1385,6 +1356,8 @@ All end user settings are contained in individual user's alt_php.ini files and c
 | |<span class="notranslate"> $ selectorctl --enable-user-extensions=pdo,phar --version=5.2 --user=user1 </span>|
 |<span class="notranslate"> --disable-user-extensions (-d): </span> | Disables extensions provided as comma-separated list. Requires <span class="notranslate"> `--version` </span> and <span class="notranslate"> `--user` </span> options.|
 | |<span class="notranslate"> $ selectorctl --disable-user-extensions=pdo,phar --version=5.2 --user=user1 </span>|
+|<span class="notranslate">--for-all-users:</span> | Allows to enable/disable extensions for all users with the required PHP version. Works only with <span class="notranslate">`--enable-user-extensions`</span> or <span class="notranslate">`--disable-user-extensions`</span> option.|
+| |<span class="notranslate">`$ selectorctl --enable-user-extensions=gd --version=5.3 --for-all-users`</span><br><br><span class="notranslate">`$ selectorctl  --disable-user-extensions=gd --version=5.3 --for-all-users`</span>|
 |<span class="notranslate"> --replace-user-extensions (-r): </span> | Replaces extensions with a provided comma-separated list of extensions Requires <span class="notranslate"> `--version` </span> and <span class="notranslate"> `--user` </span> options:|
 | |<span class="notranslate"> $ selectorctl --replace-user-extensions=pdo,phar --version=5.2 --user=user1 </span>|
 |<span class="notranslate"> --reset-user-extensions (-t): </span> | Resets extensions for end user to default list of extensions as defined in <span class="notranslate"> default.cfg </span> . Requires <span class="notranslate"> `--version` </span> and <span class="notranslate"> `--user` </span> options.|
@@ -1427,6 +1400,10 @@ All end user settings are contained in individual user's alt_php.ini files and c
 
 ### New Python Selector
 
+* [Hoster](/command-line_tools/#hoster)
+* [Examples](/command-line_tools/#examples-3)
+* [Examples](/command-line_tools/#examples-4)
+* [End user](/command-line_tools/#end-user)
 
 :::warning Warning!
 selectorctl command line tool is not supported in the new Python Selector. You can use cloudlinux-selector command line tool instead.
@@ -1925,7 +1902,6 @@ To start all users CLI commands use <span class="notranslate">`cagefs_enter`</sp
 
 ### Old Python Selector
 
-
 :::warning Warning!
 selectorctl command line tool is not supported in the new Python Selector. You can use cloudlinux-selector command line tool instead.
 :::
@@ -2086,6 +2062,9 @@ selectorctl --interpreter=ruby --user=$USER -v 2.0
 </div>
 
 ## Node.js Selector
+
+* [Hoster](/command-line_tools/#hoster-2)
+* [End user](/command-line_tools/#end-user-2)
 
 Below is a list of commands hoster and end user can run in a command line.
 
@@ -2585,6 +2564,7 @@ The following table presents which `[OPTIONS]` are supported for various panels:
 * [cldiag](/command-line_tools/#cldiag)
 * [cloudlinux-config](/command-line_tools/#cloudlinux-config)
 * [cl-quota](/command-line_tools/#cl-quota)
+* [cloudlinux-limits](/command-line_tools/#cloudlinux-limits)
 
 
 ### cldeploy
@@ -2612,7 +2592,11 @@ The script will install the following to the server:
 1. Register server with CLN.
 2. Install CloudLinux kernel, lve libraries, lve-utils, lve-stats and pam_lve packages.
 3. It will attempt to detect control panel and do the following actions:
-*  _For cPanel & DirectAdmin_:
+*  _For cPanel_:
+   * install mod_hostinglimits;
+   * install LVE Manager.
+
+*  _For DirectAdmin_:
    * recompile Apache to install mod_hostinglimits;
    * install LVE Manager.
 
@@ -2645,7 +2629,7 @@ $ cldeploy --hostinglimits           # update httpd and install mod_hostinglimit
 
 **lvectl syntax**
 
-**Usage**: <span class="notranslate">`lvectl command [veid] [options]`</span>
+**Usage**: <span class="notranslate">`lvectl command [lveid] [options]`</span>
 
 **Commands**
 
@@ -2819,6 +2803,8 @@ testuser5 0  2   2   1%    52   0    0
 
 ### cldetect
 
+* [clsupergid auto-configuration](/command-line_tools/#clsupergid-auto-configuration)
+
 :::tip Note
 <span class="notranslate">lve-utils 1.2-10+</span>
 :::
@@ -2924,7 +2910,7 @@ The utility includes several built-in checkers, and can also import and run chec
 
 Currently implemented checkers:
 
-1. <span class="notranslate">`--diag-cp`</span>
+#### 1. --diag-cp
 
 Checks control panel and its configuration (for DirectAdmin only).
 
@@ -2932,7 +2918,7 @@ Checking control panel availability, thereby detecting it with our code. Display
 
 Fails if <span class="notranslate">`/usr/local/directadmin/custombuild/options.conf`</span> does not contain <span class="notranslate">`cloudlinux=yes`</span> line (for DirectAdmin control panel).
 
-2. <span class="notranslate">`--symlinksifowner`</span>
+#### 2. --symlinksifowner
 
 Checks fs.enforce_symlinksifowner is correctly enabled in <span class="notranslate">`/etc/sysctl.conf`</span>.
 
@@ -2941,7 +2927,7 @@ Checking specified kernel setup described in [this docs section](/cloudlinux_os_
 Fails if <span class="notranslate">`/proc/sys/fs/enforce_symlinksifowner`</span> contains value `2` (it is deprecated and can cause issues for the system operation).
  
 
-3. <span class="notranslate">`--check-suexec`</span>
+#### 3. --check-suexec
 
 Checks suexec has <span class="notranslate">cagefs</span> jail.
 
@@ -2950,7 +2936,7 @@ In case if <span class="notranslate">CageFS</span> is installed and SuEXEC is on
 Fails if CageFS is not enabled for suexec binary.
 
 
-4. <span class="notranslate">`--check-suphp`</span>
+#### 4. --check-suphp
 
 Checks suphp has <span class="notranslate">cagefs</span> jail.
 
@@ -2958,7 +2944,7 @@ In case if <span class="notranslate">CageFS</span> is installed and SuPHP is on,
  
 Fails if CageFS is not enabled for suphp binary.
 
-5. <span class="notranslate">`--check-usepam`</span>
+#### 5. --check-usepam
 
 Checks UsePAM in <span class="notranslate">`/etc/ssh/sshd_config`</span>.
 
@@ -2966,7 +2952,7 @@ Checking if <span class="notranslate">`/etc/ssh/sshd_config`</span> config file 
  
 Fails if <span class="notranslate">`/etc/ssh/sshd_config`</span> contains <span class="notranslate">`UsePAM no`</span> line. 
 
-6. <span class="notranslate">`--check-symlinkowngid`</span>
+#### 6. --check-symlinkowngid
 
 Checks <span class="notranslate">`fs.symlinkown_gid`</span>.
 
@@ -2974,7 +2960,7 @@ First checking if user <span class="notranslate">`Apache`</span> is available in
  
 Fails if Apache user is not in the group specified in <span class="notranslate">`/proc/sys/fs/symlinkown_gid`</span>.
 
-7. <span class="notranslate">`--check-cpanel-packages`</span>
+#### 7. --check-cpanel-packages
 
 Checks existence of all user's packages (cPanel only)
 
@@ -2983,7 +2969,7 @@ Reading <span class="notranslate">`PLAN=`</span> for all users from <span class=
 Fails if users from <span class="notranslate">`/var/cpanel/users/`</span> directory have non-existing packages (packages do not exist in <span class="notranslate">`/var/cpanel/packages/`</span> directory, except for <span class="notranslate">`undefined`</span> and <span class="notranslate">`default`</span>). 
  
 
-8. <span class="notranslate">`--check-defaults-cfg`</span>
+#### 8. --check-defaults-cfg
 
 Checks <span class="notranslate">`/etc/cl.selector/default.cfg`</span>.
 
@@ -2995,13 +2981,13 @@ Possible reasons for failure:
    * Default version is undefined, which means <span class="notranslate">`/etc/cl.selector/default.cfg`</span> file does not contain section [versions] with the defined default version. 
    * Default PHP version is disabled.
 
-9. <span class="notranslate">`--check-cagefs`</span>
+#### 9. --check-cagefs
 
 All checks for CageFS are described separately in [this docs section](/command-line_tools/#sanity-check) and their start from cagefsctl utility is completely equivalent to the start from cldiag and is designed only for a better experience.
  
 This checker includes a set of CageFS sub-checkers, failure of one (or more) of them causes general checker failure.
 
-10. <span class="notranslate">`--check-php-conf`</span>
+#### 10. --check-php-conf
 
 Checks <span class="notranslate">`/etc/cl.selector/php.conf`</span>.
 
@@ -3013,7 +2999,7 @@ Fails if <span class="notranslate">`/etc/cl.selector/php.conf`</span> has incorr
   
  * File contains an invalid setting for the parameter <span class="notranslate">`Type`</span> (valid settings for the  <span class="notranslate">`Type`</span> parameter: <span class="notranslate">`value`, `list`, `bool`</span>)
 
-11.  <span class="notranslate">`--check-phpselector`</span>
+#### 11. --check-phpselector
 
 Checks compatibility for the <span class="notranslate">PHP Selector</span>
 
@@ -3030,20 +3016,17 @@ The following checkers are available in <span class="notranslate">**lve-utils >=
 :::
  
 
-12. <span class="notranslate">`--check-lve-limits`</span>
+#### 12. --check-lve-limits
 
 Checks the validity of LVE limits on the server.
 
 [See this page for detailed description](/limits/#limits-validation).
- 
 
-13. <span class="notranslate">`--check-rpmdb`</span>
+#### 13. --check-rpmdb
 
-Checks the RPM database integrity.
-
-Check that rpm database is operable and utils using it (e.g. yum) can work properly.
-
-To start all available checkers at once, the keys <span class="notranslate">`-a | --all`</span> are used. This does not include Check compatibility for PHP Selector, it must be started separately with <span class="notranslate">`--check-phpselector`</span> key.
+:::warning Warning
+This checker was removed from the cldiag utility as `cldiag --check-rpmdb` can in some cases hang up during `rpmdb` check, which can brake access to the database for `rpm/yum` utilities.
+:::
 
 
 ### cloudlinux-config
@@ -3173,12 +3156,19 @@ Options marked with `*` are for reseller use only
 <div class="notranslate">
 
 ```
-$ cloudlinux-config set --json --data '{"options":{"uiSettings":{"hideRubyApp":false, "hidePythonApp":false}‌}}'
+$ cloudlinux-config set --json --data '{"options":{"uiSettings":{"hideRubyApp":false, "hidePythonApp":false}}}'
 ```
 </div>
 
 
 ### cl-quota
+
+* [General provisions](/command-line_tools/#general-provisions)
+* [Setting limits and integration with panel packages](/command-line_tools/#setting-limits-and-integration-with-panel-packages)
+* [Limits inheritance](/command-line_tools/#limits-inheritance)
+* [Caching and synchronizing the limits](/command-line_tools/#caching-and-synchronizing-the-limits)
+* [Quotas DB file](/command-line_tools/#quotas-db-file)
+* [CLI options/examples](/command-line_tools/#cli-options-examples)
 
 <span class="notranslate">**cl-quota**</span> utility is designed to control <span class="notranslate">disk quotas</span> and provides:
 
@@ -3454,3 +3444,326 @@ Quota disabled for user id 500 (home directory /home/cltest1); quotaon: Mountpoi
 # cl-quota -YC
 ```
 </div>
+
+
+### cloudlinux-limits
+
+* [Usage](/command-line_tools/#usage-3)
+* [Commands](/command-line_tools/#commands)
+* [Options](/command-line_tools/#options)
+* [Examples](/command-line_tools/#examples-5)
+
+<span class="notranslate">`cloudlinux-limits`</span> is an alternative to `lvectl` CLI tool for LVE management. <span class="notranslate">`cloudlinux-limits`</span> utility allows you to get/set any CloudLinux limits.
+
+#### Usage:
+
+<div class="notranslate">
+
+```
+cloudlinux-limits command [options] [options]
+```
+</div>
+
+#### Commands
+
+| | |
+|-|-|
+|<span class="notranslate">`set`</span>|set parameters for <span class="notranslate">LVE/username/reseller</span>|
+|<span class="notranslate">`get`</span> |get information about <span class="notranslate">LVE/username/reseller</span>|
+
+#### Options
+
+| | |
+|-|-|
+|<span class="notranslate">`--json`</span>|return data in JSON format|
+|<span class="notranslate">`--lve-id <int>`</span>|Display record only for that LVE ID|
+|<span class="notranslate">`--username <str>`</span>|Execute command only for that specific user|
+|<span class="notranslate">`--reseller-name <str>`</span>|Execute command only for that specific reseller|
+|<span class="notranslate">`--reseller-id <int>`</span>|Execute command only for that specific reseller ID|
+|<span class="notranslate">`--all`</span>|Execute command for all resellers|
+|<span class="notranslate">`--for-reseller <str>`</span>|Use a supplied reseller for get/set data|
+|<span class="notranslate">`--domain <str>`</span>|Show data only for that specific domain|
+|<span class="notranslate">`--limits <keys>`</span>|Available keys: <span class="notranslate">`speed`</span>, <span class="notranslate">`nproc`</span>, <span class="notranslate">`pmem`</span>, <span class="notranslate">`vmem`</span>, <span class="notranslate">`maxEntryProcs`</span>, <span class="notranslate">`io`</span>, <span class="notranslate">`iops`</span>, <span class="notranslate">`mysql-gov`</span>, <span class="notranslate">`mysql-cpu`</span>, <span class="notranslate">`mysql-io`</span>, <span class="notranslate">`cagefs`</span>, <span class="notranslate">`inodes`</span>|
+|<span class="notranslate">`--human-readable-numbers`</span>|Return <span class="notranslate">`PMEM`</span> and <span class="notranslate">`VMEM`</span> limits in KBytes, MBytes or GBytes|
+|<span class="notranslate">`--unlimited`</span>|Set all limits to unlimited|
+|<span class="notranslate">`--default [limits]`</span>|Reset limits to the Package defaults. List of comma-separated limits to reset them to default or <span class="notranslate">`all`</span>|
+|<span class="notranslate">`--mysql-gov <ignored|watched>`</span>|Monitor or ignore by MySQL Governor|
+|<span class="notranslate">`--cagefs <enabled|disabled>`</span>|Enable or disable CageFS for a user|
+|<span class="notranslate">`--mysql-restrict <[un]restricted>`</span>|Set user restrict status with dbctl (<span class="notranslate">`restricted`</span> or <span class="notranslate">`unrestricted`</span>)|
+|<span class="notranslate">`--mysql-unrestrict-all`</span>|Unrestrict all restricted users with dbctl|
+|<span class="notranslate">`--speed <str>`</span>|Limit CPU usage for LVE | LVP|
+|<span class="notranslate">`--pmem <str>`</span>|Limit physical memory usage for applications inside LVE | LVP|
+|<span class="notranslate">`--vmem <str>`</span>|Limit virtual memory for applications inside LVE|
+|<span class="notranslate">`--nproc <str>`</span>|Limit number of processes for LVE | LVP|
+|<span class="notranslate">`--io <str>`</span>|Define IO limits for LVE | LVP (KB/s)|
+|<span class="notranslate">`--iops <str>`</span>|Limit IO per second for LVE | LVP|
+|<span class="notranslate">`--maxEntryProcs <str>`</span>|Limit number of entry processes for LVE | LVP|
+|<span class="notranslate">`--mysql-cpu <int>`</span>|Set MySQL Governor CPU limit (pct)|
+|<span class="notranslate">`--mysql-io <int>`</span>|Set MySQL Governor IO limit (read + write MB/s)|
+|<span class="notranslate">`--inodes <N,M>`</span>|Set inode limits. `N` - soft, `M` - hard|
+|<span class="notranslate">`--save-all-parameters`</span>|Save all parameters even if they match with default settings|
+|<span class="notranslate">`-h`</span>, <span class="notranslate">`--help`</span>|Show this help message and exit|
+|<span class="notranslate">`disable-reseller-limits`</span> |disable <span class="notranslate">Reseller Limits</span> for a reseller/all resellers|
+|<span class="notranslate">`enable-reseller-limits`</span> |enable <span class="notranslate">Reseller Limits</span> for a reseller/all resellers|
+
+<span class="notranslate">`cloudlinux-limits`</span> allows you to manage limits and states for the next types of users:
+
+* users, created by admin; 
+* users, created by resellers with reseller limits enabled (see [documentation](/cloudlinux_os_components/#reseller-limits))
+* users, created by resellers without reseller limits enabled. 
+
+For resellers' users with reseller limits enabled admin should use the <span class="notranslate">`--for-reseller`</span> option.
+
+#### Examples
+
+1. Get limits
+
+     * Return data in JSON format
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits get --json 
+    ```
+    </div>
+
+    * Get data for the user <span class="notranslate">`user1`</span> in JSON format
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits get --username user1  --json 
+    ```
+    </div>
+
+    * Get data for the reseller <span class="notranslate">`res1`</span> in JSON format
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits get --reseller-name res1 --json
+    ```
+    </div>
+
+    * Get data for the domain <span class="notranslate">`myapp.com`</span> in JSON format
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits get --domain myapp.com --json
+    ```
+    </div>
+
+    * Get data about entry processes and virtual memory for LVE for the user <span class="notranslate">`myapp`</span> in JSON format
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits get --username myapp --limits=maxEntryProcs,vmem  --json
+    ```
+    </div>
+
+2. Change CageFS status
+    :::warning Note
+    * CageFS should be installed and initialized
+    * <span class="notranslate">`--cagefs`</span> option is not compatible with the <span class="notranslate">`--reseller-name`</span>, <span class="notranslate">`--for-reseller`</span> options
+    :::
+
+    * Enable CageFS for the user <span class="notranslate">`user1`</span>.
+    :::tip Note
+    This example is suitable for any type of user.
+    :::
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --username user1 --cagefs enable --json
+    ```
+    </div>
+
+3. Change <span class="notranslate">MySQL Governor</span> status <span class="notranslate">`ignored`|`watched`, `restricted`|`unrestricted`</span>
+    :::warning Note
+    * <span class="notranslate">MySQL Governor</span> should be installed; see [documentation](/cloudlinux_os_components/#installation-and-update-3)
+    * <span class="notranslate">`--mysql-gov`</span> and <span class="notranslate">`--mysql-restrict`</span> options are not compatible with the <span class="notranslate">`--reseller-name`</span>, <span class="notranslate">`--for-reseller`</span> options
+    :::
+
+    :::tip Note
+    These examples are suitable for any type of user.
+    :::
+
+    * Change <span class="notranslate">MySQL Governor</span> status to <span class="notranslate">`ignored`</span> for the user <span class="notranslate">`user1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --username user1 --mysql-gov ignored --json
+    ```
+    </div>
+
+
+    * Change <span class="notranslate">MySQL Governor</span> status to <span class="notranslate">`restricted`</span> for the user <span class="notranslate">`user1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --username user1 --mysql-restrict restricted --json
+    ```
+    </div>
+
+4. Change limits for a user
+    :::warning Note
+    *  <span class="notranslat">MySQL Governor</span> should be [installed](/cloudlinux_os_components/#installation-and-update-3) to change the <span class="notranslate">`mysql-cpu`</span> and <span class="notranslate">`mysql-io`</span> options
+    *  <span class="notranslate">`--inodes`</span>, <span class="notranslate">`--mysql-cpu`</span>, and <span class="notranslate">`--mysql-io`</span> options are not compatible with the <span class="notranslate">`--for-reseller`</span> and <span class="notranslate">`--reseller-name`</span> options
+    *  <span class="notranslate">`--username`</span> option is suitable for any type of user
+    :::
+
+    * Set <span class="notranslate">`speed`</span>, <span class="notranslate">`io`</span>, <span class="notranslate">`nproc`</span>, <span class="notranslate">`pmem`</span>, <span class="notranslate">`vmem`</span>, <span class="notranslate">`iops`</span>, <span class="notranslate">`inodes`</span>, <span class="notranslate">`maxEntryProcs`</span>, <span class="notranslate">`mysql-cpu`</span>, and <span class="notranslate">`mysql-io`</span> limits for the LVE ID 1000
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --lve-id 1000 --speed 78% --io 8090 --nproc 900 --pmem 300 --vmem 800 --iops 900 --inodes 9090,8989 --maxEntryProcs 90 --mysql-cpu 30 --mysql-io 500 --json 
+    ```
+    </div>
+
+    * Set <span class="notranslate">`speed`</span>, <span class="notranslate">`io`</span>, <span class="notranslate">`nproc`</span>, <span class="notranslate">`pmem`</span>, <span class="notranslate">`vmem`</span>, <span class="notranslate">`iops`</span>, and <span class="notranslate">`maxEntryProcs`</span> limits for the reseller <span class="notranslate">`res1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --reseller-name res1 --speed 78% --io 8090 --nproc 900 --pmem 300 --vmem 800 --iops 900 --maxEntryProcs 90 --json
+    ```
+    </div>
+
+5. Set limits for a <span class="notranslate">`DEFAULT`</span> user 
+   :::tip Note
+   A <span class="notranslate">`default`</span> user is used to set some preselected limits for just created user\package.
+   :::
+ 
+    * Set limits for the admin's <span class="notranslate">`default`</span> user
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --lve-id DEFAULT --speed 78% --io 8090 --nproc 900 --pmem 300 --vmem 800 --iops 900 --inodes 9090,8989 --maxEntryProcs 90 --mysql-cpu 30 --mysql-io 500 --json
+    ```
+    </div>
+
+
+    * Set limits for the reseller's (with reseller limits enabled) <span class="notranslate">`default`</span> user
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --lve-id DEFAULT --speed 48% --io 8990 --nproc 900 --pmem 300 --vmem 800 --iops 900 --maxEntryProcs 90 --for-reseller res1 --json
+    ```
+    </div>
+
+6. Reset all limits to default values (package limits) for a user
+
+    * Reset all limits to default values for the user <span class="notranslate">`user1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --username user1 --default all --json
+    ```
+    </div>
+
+    * Reset all limits to default values for the reseller's <span class="notranslate">`res1`</span> user <span class="notranslate">`r1user1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --username r1user1 --default all --for-reseller res1 --json
+    ```
+    </div>
+
+7. Reset all limits to unlimited values for a user 
+
+    * Reset all limits to <span class="notranslate">`unlimited`</span> for the user <span class="notranslate">`user1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --username user1 --unlimited --json
+    ```
+    </div>
+
+    * Reset all limits to <span class="notranslate">`unlimited`</span> for the reseller's <span class="notranslate">`res1`</span> user <span class="notranslate">`r1user1`</span> 
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --username r1user1 --unlimited --for-reseller res1 --json
+    ```
+    </div>
+
+8. Enable reseller limits
+
+    * Enable reseller limits for the reseller <span class="notranslate">`res1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits enable-reseller-limits --reseller-name res1 --json
+    ```
+    </div>
+
+
+9. Get info about a reseller
+    
+    * Get info about the reseller <span class="notranslate">`res1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits get --reseller-name res1 --json 
+    ```
+    </div>
+
+
+10. Change reseller limits
+    
+    * Change <span class="notranslate">`speed`</span> limit for the reseller <span class="notranslate">`res1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --reseller-name res1 --speed 78% --json
+    ```
+    </div>
+
+    * Reset all limits to <span class="notranslate">`unlimited`</span> for the reseller <span class="notranslate">`res1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --reseller-name res1 --unlimited --json
+    ```
+    </div>
+
+    * Reset all limits to <span class="notranslate">`default`</span> for the reseller <span class="notranslate">`res1`</span>
+
+    <div class="notranslate">
+
+    ```
+    cloudlinux-limits set --reseller-name res1 --default all --json
+    ```
+    </div>
+
+    
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+

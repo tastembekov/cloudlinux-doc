@@ -6,6 +6,7 @@
 * [OptimumCache](/deprecated/#optimumcache)
 * [TPE extension](/deprecated/#tpe-extension)
 * [CPU limits](/deprecated/#cpu-limits)
+* [Package integration](/deprecated/#package-integration). You can use [Control panel integration guide](/control_panel_integration/) instead.
 
 ## Git for cPanel
 
@@ -621,6 +622,9 @@ Further reading: [http://kb.cloudlinux.com/tag/optimumcache/](http://kb.cloudlin
 
 ### Installation
 
+* [Requirements](/deprecated/#requirements)
+* [Installation](/deprecated/#installation-2)
+
 :::tip NOTE
 OPTIMUMCACHE IS NO LONGER SUPPORTED
 :::
@@ -1075,6 +1079,15 @@ Optional Arguments:
 
 ### cloudlinux-collect: collect system load statistics
 
+* [cloudlinux-collectl: quick start](/deprecated/#cloudlinux-collectl-quick-start)
+* [Install](/deprecated/#install)
+* [Measure web site response time](/deprecated/#measure-web-site-response-time)
+* [To watch what is being collected](/deprecated/#to-watch-what-is-being-collected)
+* [Statistics being collected in details](/deprecated/#statistics-being-collected-in-details)
+* [Statistics manual configuration](/deprecated/#statistics-manual-configuration)
+* [Running statistics daemon: collectl-cloudlinux](/deprecated/#running-statistics-daemon-collectl-cloudlinux)
+* [Analyzing the results](/deprecated/#analyzing-the-results)
+
 :::tip Note
 OPTIMUMCACHE IS NO LONGER SUPPORTED
 :::
@@ -1337,6 +1350,14 @@ If uninstall OptimumCache process lasts for too long, please find the solution i
 
 ### Troubleshooting
 
+* [Installing for FS is different from Ext4](/deprecated/#installing-for-fs-is-different-from-ext4)
+* [Yum fails to install Perl rpms coming with OptimumCache](/deprecated/#yum-fails-to-install-perl-rpms-coming-with-optimumcache)
+* [OptimumCache prior 0.2-23: Cannot unmount old ploop image](/deprecated/#optimumcache-prior-0-2-23-cannot-unmount-old-ploop-image)
+* [High IO rate](/deprecated/#high-io-rate)
+* [High CPU utilization](/deprecated/#high-cpu-utilization)
+* [Uninstalling OptimumCache lasts for too long](/deprecated/#uninstalling-optimumcache-lasts-for-too-long)
+* [‘Failed to attach peer: Invalid argument’ appears in syslog](/deprecated/#‘failed-to-attach-peer-invalid-argument’-appears-in-syslog)
+
 :::tip Note
 OPTIMUMCACHE IS NO LONGER SUPPORTED
 :::
@@ -1594,3 +1615,90 @@ This limit is no longer used, and <span class="notranslate"> [SPEED](/limits/#sp
 |8 | 50% | 3 | 3 cores|
 
 When user hits <span class="notranslate"> CPU </span> limit, processes within that limit are slowed down. For example, if you set your <span class="notranslate"> CPU </span> limit to 10%, and processes inside LVE want to use more then 10% they will be throttled (put to sleep) to make sure they don't use more then 10%. In reality, processes don't get <span class="notranslate"> CPU </span> time above the limit, and it happens much more often then 1 second interval, but the end result is that processes are slowed down so that their usage is never above the <span class="notranslate"> CPU </span> limit set.
+
+## Package integration
+
+:::tip Note
+Deprecated.
+:::
+
+:::warning Note
+You can use [Control panel integration guide](/control_panel_integration/) instead.
+:::
+
+**[lve-utils 1.4+]**
+
+CloudLinux can automatically detect the most popular control panels, like cPanel - and allows to set different limits for users in different packages. It simplifies management as you don't have to choose between one limit that fits all your customers on the server, or individual limits for the customers.
+
+If you have a custom made control panel, with your own 'package' implementation, you can still use CloudLinux framework to manage limits for your packages.
+
+To do that, you would need:
+
+Implement script that would map users to packages.
+
+Configure lvectl to use your script.
+
+**Implementing script**
+
+A script can be written in any language, and it has to be executable.
+
+It should accept the following arguments:
+
+--list-all                        prints [userid package] pairs
+
+Output should look like a list of space separate pairs of user Linux IDs and package names.
+
+<div class="notranslate">
+
+```
+100 package1
+101 package1
+102 package2
+103 package3
+```
+</div>
+
+<span class="notranslate">--userid=id prints package for a user specified </span>
+
+Output should contain package name, like:
+
+<div class="notranslate">
+
+```
+package1
+```
+</div>
+
+<span class="notranslate">--package="package"    prints users for a package specified. </span>
+
+Output should look like a list of user Linux IDs.
+
+<div class="notranslate">
+
+```
+100
+101
+```
+</div>
+
+<span class="notranslate">--list-packages prints the list of packages </span>
+
+Output contains a list of names of packages, like:
+
+<div class="notranslate">
+
+```
+package1
+package2
+package3
+```
+</div>
+
+**Configuring lvectl to use your custom script**
+
+Edit <span class="notranslate">/etc/sysconfig/cloudlinux </span> file.
+
+Edit or modify parameter <span class="notranslate">`CUSTOM_GETPACKAGE_SCRIPT`</span>, and set it to point to your script, like: <span class="notranslate">`CUSTOM_GETPACKAGE_SCRIPT=/absolute/path/to/your/script`</span>
+
+
+For the script example please check the following article: [https://cloudlinux.zendesk.com/hc/en-us/articles/115004529105-Integrating-LVE-limits-with-packages-for-unsupported-control-panels](https://cloudlinux.zendesk.com/hc/en-us/articles/115004529105-Integrating-LVE-limits-with-packages-for-unsupported-control-panels).

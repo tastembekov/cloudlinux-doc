@@ -3,6 +3,11 @@
 ## Reseller limits
 ### General information and requirements
 
+* [Types of Users](/cloudlinux_os_components/#types-of-users)
+* [Types of Limits](/cloudlinux_os_components/#types-of-limits)
+* [What happens when reseller or reseller's end user hits the limit?](/cloudlinux_os_components/#what-happens-when-reseller-or-reseller-s-end-user-hits-the-limit)
+* [Requirements](/cloudlinux_os_components/#requirements)
+
 <span class="notranslate">Reseller limits</span> is a feature that allows hosters to set limits for the resources each reseller can operate with. Hoster also provides controls to the reseller on what resources each reseller’s end user will have. Reseller limits set by a hoster limit the total amount of resources resellers’ end users can consume altogether.
 
 When a hoster has set reseller limits for the particular reseller he provides the reseller with an ability to set limits for his end users within the Reseller Interface.
@@ -25,14 +30,14 @@ See the comparison Table with types of limits.
 | |  |  | |
 |-|--|--|-|
 |**Limits** | **Reseller limits** | **Reseller’s end user limits** | **Hoster’s end user limits**|
-|<span class="notranslate"> [SPEED</span>| Yes | Yes | Yes|
-|<span class="notranslate"> [PMEM</span>| Yes | Yes | Yes|
-|<span class="notranslate"> [IO</span>| Yes | Yes | Yes|
-|<span class="notranslate"> [IOPS</span>| Yes | Yes | Yes|
-|<span class="notranslate"> [EP</span>| Yes | Yes | Yes|
-|<span class="notranslate"> [NPROC</span>| Yes | Yes | Yes|
-|<span class="notranslate"> Inodes </span> | Yes (default for all users) | No | Yes|
-|<span class="notranslate"> MySQL Limits </span> | Yes (supported only for <span class="notranslate"> MySQL Governor ALL </span> mode) | Yes (supported only for <span class="notranslate"> MySQL Governor ALL </span> mode) | Yes|
+|<span class="notranslate">SPEED</span>| Yes | Yes | Yes|
+|<span class="notranslate">PMEM</span>| Yes | Yes | Yes|
+|<span class="notranslate">IO</span>| Yes | Yes | Yes|
+|<span class="notranslate">IOPS</span>| Yes | Yes | Yes|
+|<span class="notranslate">EP</span>| Yes | Yes | Yes|
+|<span class="notranslate">NPROC</span>| Yes | Yes | Yes|
+|<span class="notranslate">Inodes </span> | Yes (default for all users) | No | Yes|
+|<span class="notranslate">MySQL Limits </span> | Yes (supported only for <span class="notranslate"> MySQL Governor ALL </span> mode) | Yes (supported only for <span class="notranslate"> MySQL Governor ALL </span> mode) | Yes|
 
 #### What happens when reseller or reseller's end user hits the limit?
 
@@ -51,7 +56,7 @@ Reseller Limits are only supported in kernel starting with the version **3.10.0-
 :::
 
 :::tip Note
-If you are using CloudLinux 6 kernel you would have to migrate to <span class="notranslate">CloudLinux 6 Hybrid</span> kernel first in order to be able to use new Reseller Limits functionality.
+In case you wish to use the new Reseller limits features and you use CloudLinux 6 kernel, you have to migrate to <span class="notranslate">CloudLinux 6 Hybrid</span> kernel first.
 :::
 
 ### Installation, enabling, and disabling
@@ -108,6 +113,14 @@ Use the detailed instruction below:
     </div>
 
 
+:::tip Note
+When you move a user from one reseller to another on DirectAdmin, the LVE Manager's Reset function does not consider package limits of the end-user and reset them to defaults.
+To solve this, you can do one of the following:
+1. Change a package to one of Reseller's package for the moved users.
+2. Create a package with the same name and limits for the Reseller with the moved users.
+:::
+
+
 ### How to enable and disable Reseller limits
 
 To start using a new feature <span class="notranslate">**Reseller limits**</span> you would have to enable reseller limits for a particular reseller first.
@@ -152,6 +165,11 @@ See also [Reseller limits UI](/lve_manager/#reseller-limits).
 
 ## LVE-Stats 2
 ### General information and requirements
+
+* [Why is it needed?](/cloudlinux_os_components/#why-is-it-needed)
+* [Major improvements and features](/cloudlinux_os_components/#major-improvements-and-features)
+* [What features will be implemented in the future?](/cloudlinux_os_components/#what-features-will-be-implemented-in-the-future)
+
 #### Why is it needed?
 
 * Old LVE-statistics store averages as integer numbers, as % of <span class="notranslate">CPU</span> usage. If user used 100% of <span class="notranslate">CPU</span> for 1 second within an hour, it is only 1-2% for a minute, and 0 for 5 minutes. Data in old LVE-statistics is aggregated to 1-hour intervals. So, such peak load will noExat be recorded and we need to store data with much higher precision.
@@ -172,6 +190,10 @@ See also [Reseller limits UI](/lve_manager/#reseller-limits).
 * more pretty, scalable, interactive charts;
 * snapshots include HTTP-requests.
 
+:::tip Note
+[`mod_proctitle`](/cloudlinux_os_components/#mod-proctitle) has to be enabled for HTTP request collection to be available
+:::
+
 #### What features will be implemented in the future?
 
 * Notifications for control panels other than CPanel.
@@ -180,6 +202,8 @@ See also [Reseller limits UI](/lve_manager/#reseller-limits).
 * Suspend/notify plugin: would detect that user is being throttled for 10 minutes, and suspend him (just because), or notify, or increase limits.
 
 ### Installation and update
+
+* [Downgrade](/cloudlinux_os_components/#downgrade)
 
 To install, please execute:
 
@@ -259,6 +283,10 @@ Main configuration file <span class="notranslate">`/etc/sysconfig/lvestats2`</sp
   Possible values:
     * <span class="notranslate">`true`</span>
     * <span class="notranslate">`false`</span>
+* <span class="notranslate">`hide_lve_more_than_maxuid`</span> - disable displaying of lve ids more than max uid in resource usage.
+  Possible values:
+    * <span class="notranslate">`true`</span>
+    * <span class="notranslate">`false`</span>
 
 Configuration files for plugins are located in <span class="notranslate">`/etc/sysconfig/lvestats.config`</span> directory.
 
@@ -318,6 +346,10 @@ You can also use [LVE-stats 2 CLI](/command-line_tools/#lve-stats-2)
 :::
 
 ### LVE-stats2 and DB servers compatible work setup
+
+* [LVE-stats2 and MySQL DB server compatible work setup](/cloudlinux_os_components/#lve-stats2-and-mysql-db-server-compatible-work-setup)
+* [LVE-stats2 and PostgreSQL DB server compatible work setup](/cloudlinux_os_components/#lve-stats2-and-postgresql-db-server-compatible-work-setup)
+* [Customize LVE-stats2 notifications](/cloudlinux_os_components/#customize-lve-stats2-notifications)
 
 #### LVE-stats2 and MySQL DB server compatible work setup
 
@@ -877,6 +909,18 @@ Your Friendly Web Hosting Support Team
 
 
 ### Plugins
+
+* [Creating a plugin for LVE-stats2](/cloudlinux_os_components/#creating-a-plugin-for-lve-stats2)
+* [Introduction](/cloudlinux_os_components/#introduction)
+* [Server plugin arrangement](/cloudlinux_os_components/#server-plugin-arrangement)
+* [Plugin configuration](/cloudlinux_os_components/#plugin-configuration)
+* [Types of plugins](/cloudlinux_os_components/#types-of-plugins)
+* [Examples of plugins](/cloudlinux_os_components/#examples-of-plugins)
+  * [Collector](/cloudlinux_os_components/#collector)
+  * [Analyzer](/cloudlinux_os_components/#analyzer)
+  * [Persistor](/cloudlinux_os_components/#persistor)
+  * [Notifier](/cloudlinux_os_components/#notifier)
+* [File info and format for /var/lve/info file](/cloudlinux_os_components/#file-info-and-format-for-var-lve-info-file)
 
 LVE-stats2 comes with a set of generic plugins:
 
@@ -1539,6 +1583,9 @@ There is <span class="notranslate">`/var/log/lve-stats.log`</span> file with add
 
 ### General information and requirements
 
+* [Minimum Requirements](/cloudlinux_os_components/#minimum-requirements)
+* [CageFS quirks](/cloudlinux_os_components/#cagefs-quirks)
+
 CageFS is a virtualized file system and a set of tools to contain each user in its own 'cage'. Each customer will have its own fully functional CageFS, with all the system files, tools, etc.
 
 The benefits of CageFS are:
@@ -1752,6 +1799,10 @@ You can also use [CageFS CLI](/command-line_tools/#cagefs)
   
   * [Mounting user’s home directory inside CageFS](/cloudlinux_os_components/#mounting-users-home-directory-inside-cagefs)  
 
+  * [How to hide directory inside mount point](/cloudlinux_os_components/#how-to-hide-directory-inside-mount-point)
+  
+  * [Example](/cloudlinux_os_components/#example)
+
 * [Base home directory](/cloudlinux_os_components/#base-home-directory)
 
 * [PostgreSQL support](/cloudlinux_os_components/#postgresql-support)
@@ -1761,6 +1812,16 @@ You can also use [CageFS CLI](/command-line_tools/#cagefs)
 * [Filtering options for commands executed by proxyexec](/cloudlinux_os_components/#filtering-options-for-commands-executed-by-proxyexec)
 
 * [Executing by proxy](/cloudlinux_os_components/#executing-by-proxy)
+
+* [Users with duplicate UIDs](/cloudlinux_os_components/#users-with-duplicate-uids)
+
+* [Examples](/cloudlinux_os_components/#examples)
+
+  * [Example 1. Make users in CageFS be able to execute a script which must work outside CageFS](/cloudlinux_os_components/#example-1-make-users-in-cagefs-be-able-to-execute-a-script-which-must-work-outside-cagefs)
+
+  * [Example 2. Permissions escalation](/cloudlinux_os_components/#example-2-permissions-escalation)
+
+  * [Example 3. Custom proxyexec wrapper](/cloudlinux_os_components/#example-3-custom-proxyexec-wrapper)
 
 * [Custom /etc files per customer](/cloudlinux_os_components/#custom-etc-files-per-customer)
 
@@ -1779,7 +1840,11 @@ You can also use [CageFS CLI](/command-line_tools/#cagefs)
 
 #### File system templates
 
-CageFS creates a filesystem template in <span class="notranslate"> _/usr/share/cagefs-skeleton_ </span> directory. CageFS template will be mounted for each customer.  The template is created by running:
+:::warning Note
+Please do not modify any existing files in the <span class="notranslate">`/etc/cagefs/conf.d`</span> directory because they may be overwritten while updating CageFS package. You should create a new file with a unique name instead.
+:::
+
+CageFS creates a filesystem template in <span class="notranslate">`/usr/share/cagefs-skeleton`</span> directory. CageFS template will be mounted for each customer. The template is created by running:
 <div class="notranslate">
 
 ```
@@ -2044,7 +2109,7 @@ cagefsctl --remount-all
 
 After that each subdirectory of <span class="notranslate"> _/home/httpd/fcgi-bin_ </span> will be mounted for appropriate user in CageFS: <span class="notranslate"> _/home/httpd/fcgi-bin/user1_ </span> will be mounted for <span class="notranslate"> user1 </span> and <span class="notranslate"> _/home/httpd/fcgi-bin/user2_ </span> will be mounted for <span class="notranslate"> user2 </span> .
 
-#### **Mounting user’s home directory inside CageFS**
+#### **Mounting users home directory inside CageFS**
 
 
 CageFS 6.1-1 (and later) has improved mounting user’s home directory that is applied for users with home directories like <span class="notranslate"> _/home/user_ or _/homeN/user_ </span> (where <span class="notranslate"> N </span> = 0,1,..9).
@@ -2067,6 +2132,30 @@ This new mounting mode is enabled by default. You can switch to old mounting mod
 :::tip Note
 New mounting mode will be disabled automatically when "mounting base home directory" mode is enabled <span class="notranslate"> (`mount_basedir=1` setting in _/etc/cagefs/cagefs.base.home.dirs_ </span> file).
 :::
+
+#### How to hide directory inside mount point <sup><Badge type="warning" text="CageFS 6.4.7-1 +"/></sup>
+
+:::tip Note
+For files outside a mount point, use blacklisting, see: [Excluding files](/cloudlinux_os_components/#excluding-files)
+:::
+
+To hide directories inside a mount point, create a file in the <span class="notranslate">`/etc/cagefs/empty.dirs`</span> directory (you can use any name) with a list of directories to be hidden (these directories will look like empty for users in CageFS).
+:::tip Note
+Please do not edit the supplied config file (<span class="notranslate">`/etc/cagefs/empty.dirs/emptied_dirs.default`</span>).
+:::
+
+#### Example
+
+Let’s take a <span class="notranslate">`/var/www`</span> directory which contains the following folders: <span class="notranslate">`icons`</span> and <span class="notranslate">`html`</span>.
+To hide the <span class="notranslate">`/var/www`</span> directory content from users inside CageFS, we will do the following:
+
+* Create the <span class="notranslate">`custom.empty`</span> file with a single record: <span class="notranslate">`/var/www`</span>
+* Place the <span class="notranslate">`custom.empty`</span> file to the <span class="notranslate">`/etc/cagefs/empty.dirs`</span> directory
+* Run the <span class="notranslate">`cagefsctl --remount-all`</span> command
+
+Now, all users inside CageFS will see the <span class="notranslate">`/var/www`</span> directory as an empty directory even if there is <span class="notranslate">`/var/www/html`</span> in the <span class="notranslate">`/etc/cagefs/cagefs.mp`</span>.
+
+
 
 #### Base home directory
 
@@ -2205,7 +2294,7 @@ to prevent symlink from being removed.
 #### PAM configuration
 
 
-CageFS depends on <span class="notranslate"> **pam_lve** </span> module tor PAM enabled services. When installed, the module is automatically installed for following services:
+CageFS depends on <span class="notranslate"> **pam_lve** </span> module for PAM enabled services. When installed, the module is automatically installed for following services:
 
 * sshd
 * crond
@@ -2301,57 +2390,46 @@ It is possible to verify that a path specified as a parameter for an option does
 #### Executing by proxy
 
 
-Some software has to run outside CageFS to be able to complete its job. This includes such programs as <span class="notranslate">**passwd, sendmail**</span>, etc.
+Some software has to run outside CageFS to be able to complete its job. It includes such programs as passwd, sendmail, etc. CageFS provides proxyexec technology to accomplish this goal: you can define any program to run outside CageFS by specifying it in any file located in the <span class="notranslate">`/etc/cagefs/`</span> which ends with <span class="notranslate">`.proxy.commands`</span>. In the examples below we use <span class="notranslate">`custom.proxy.commands`</span>, but you can use any other name, e.g. <span class="notranslate">`mysuperfile.proxy.commands`</span>.
 
-CloudLinux uses <span class="notranslate"> proxyexec </span> technology to accomplish this goal. You can define any program to run outside CageFS, by specifying it in <span class="notranslate"> _/etc/cagefs/custom.proxy.commands_ </span> file. Do not edit existing <span class="notranslate"> _/etc/cagefs/proxy.commands_ </span> as it will be overwritten with next CageFS update.
+::: tip Warning
+Do not edit the existing <span class="notranslate">`/etc/cagefs/proxy.commands`</span> file as it will be overwritten with the next CageFS update.
+:::
 
-Once program is defined, run this command to populate the skeleton:
+The syntax of the <span class="notranslate">`/etc/cagefs/[*.]proxy.commands`</span> file is as follows:
+
 <div class="notranslate">
 
 ```
-$ cagefsctl --update
+ALIAS[:wrapper_name]=[username:]path_to_executable
 ```
+
 </div>
 
-All the cPanel scripts located in <span class="notranslate">`/usr/local/cpanel/cgi-sys/`</span> that user might need to execute should be added to <span class="notranslate">`proxy.commands`</span>.
+| Parameter          | Description |
+| ------------------ | ----------- |
+| <span class="notranslate">`ALIAS`</span>              | Any name unique within all <span class="notranslate">`/etc/cagefs/\[*.\]proxy.commands`</span> files. Used as an identifier.|
+| <span class="notranslate">`wrapper_name`</span>       | Optional field. The name of the wrapper file which is used as a replacement for an executable file (set by <span class="notranslate">`path_to_executable`</span>) inside CageFS. <br><br>Possible values:<br>- a name of a wrapper you place into the <span class="notranslate">`/usr/share/cagefs/safeprograms`</span> directory;<br>- <span class="notranslate">`noproceed`</span> - a reserved word which means that the wrapper is not needed, e.g. when it is already installed by other ALIAS. Often used for the commands with several ALIAS as in the example below.<br>- omit this field - default wrapper <span class="notranslate">`cagefs.proxy.program`</span> will be used.<br><br>Used in cases when you'd like to give access only to the part of binary functions but it is not possible to do that using [options filtering](/cloudlinux_os_components/#filtering-options-for-commands-executed-by-proxyexec).<br>**Note**: wrapper works inside CageFS with user rights and executes “real” scripts using proxy daemon. |
+| <span class="notranslate">`path_to_executable`</span> | A path to an executable file that will run via proxyexec.|
+| <span class="notranslate">`username`</span>           | Optional field. A name of a user on whose behalf <span class="notranslate">`path_to_executable`</span> will run in the real system. If <span class="notranslate">`username`</span> is not specified, then <span class="notranslate">`path_to_executable`</span> will run on behalf of the same user who is inside CageFS. |
 
-The syntax of <span class="notranslate">`/etc/cagefs/*.proxy.commands`</span> files is as follows:  
-<span class="notranslate">`ALIAS:wrapper_name=username:path_to_executable`</span>
 
+Once the program is defined, run this command to populate the skeleton:
 
-Mandatory parameters are <span class="notranslate">`ALIAS`</span> and <span class="notranslate">`path_to_executable`</span>.
-
-* <span class="notranslate">`ALIAS`</span> - any name which is unique within all <span class="notranslate">`/etc/cagefs/*.proxy.commands`</span> files;
-
-* <span class="notranslate">`wrapper_name`</span> - the name of wrapper file, which is used as a replacement for executable file <span class="notranslate">`path_to_executable_ inside CageFS`</span>. Wrapper files are located in <span class="notranslate">`/usr/share/cagefs/safeprograms`</span>. If wrapper name is not specified, then default wrapper <span class="notranslate">`/usr/share/cagefs/safeprograms/cagefs.proxy.program`</span> is used. Also, a reserved word <span class="notranslate">`noproceed`</span> can be used, it will intend that wrapper is not in use (installed before) - applied for the commands with several <span class="notranslate">`ALIAS`</span>, as in the example below.
-
-* <span class="notranslate">`username`</span> - the name of a user on whose behalf <span class="notranslate">`path_to_executable`</span> will run in the real system. If <span class="notranslate">`username`</span> is not specified, then <span class="notranslate">`path_to_executable`</span> will run on behalf the same user that is inside CageFS.
-
-* <span class="notranslate">`path_to_executable`</span> - the path to executable file which will run via <span class="notranslate">`proxyexec`</span>.
-
-Example of a simple command executed via <span class="notranslate">`proxyexec`</span>:
 <div class="notranslate">
 
 ```
-SENDMAIL=/usr/sbin/sendmail
+$ cagefsctl --force-update
 ```
+
 </div>
 
-Example of <span class="notranslate"> crontab </span> command execution with custom wrapper under <span class="notranslate">root</span> (privilege escalation). The command uses two <span class="notranslate">ALIAS</span> , that is why in the second line <span class="notranslate">`noproceed`</span> is specified instead of wrapper name.
-<div class="notranslate">
+#### Users with duplicate UIDs
 
-```
-CRONTAB_LIST:cagefs.proxy.crontab=root:/usr/bin/crontab
-CRONTAB_SAVE:noproceed=root:/usr/bin/crontab
-```
-</div>
+Sometimes hosters may have users with non-unique <span class="notranslate">UIDs</span>. Thus, <span class="notranslate">`proxyexec`</span> may traverse users' directories to find a specific one. That behavior turns into inappropriate if the user's directory is not cached locally (for example LDAP is used).
 
-**Users with duplicate UIDs**
+To turn this feature off, run:
 
-
-Sometimes hosters may have users with non unique <span class="notranslate">UIDs</span>. Thus, <span class="notranslate">`proxyexec`</span> may traverse users directory to find a specific one. That behavior turns into inappropriate if users directory is not cached locally (for example LDAP is in use).
-
-To turn this feature off:
 <div class="notranslate">
 
 ```
@@ -2359,7 +2437,8 @@ touch /etc/cagefs/proxy.disable.duid
 ```
 </div>
 
-Or to activate it back:
+Or to activate it back, run:
+
 <div class="notranslate">
 
 ```
@@ -2367,6 +2446,251 @@ rm /etc/cagefs/proxy.disable.duid
 ```
 </div>
 
+
+#### Examples
+
+Let's have a script that must do some stuff outside CageFS and return a result to a user. Let's name it <span class="notranslate">`superbinary`</span> and place it into the <span class="notranslate">`/my/scripts/`</span> directory.
+
+In the examples below, we will use a small script that:
+
+* checks if it works inside or outside of CageFS
+* prints a number of users in the <span class="notranslate">`/etc/passwd`</span> file
+
+We use the <span class="notranslate">`/etc/passwd`</span> file because it is truncated inside the cage by default and we can easily see the difference between CageFS and the “real” system by just counting lines in it.
+
+<div class="notranslate">
+
+```
+$ cat /opt/scripts/superbinary
+#!/usr/bin/env bash
+if [[ -e /var/cagefs ]]; then
+  echo "I am running without CageFS"
+else
+  echo "I am running in CageFS"
+fi;
+echo "I am running as: `whoami`"
+echo "Number or records in /etc/passwd: `cat /etc/passwd | wc -l`"
+```
+</div>
+
+First, let’s check that CageFS works: create a user and disable the cage:
+
+<div class="notranslate">
+
+```
+useradd test
+cagefsctl --disable test
+```
+</div>
+
+Then, run the following command as <span class="notranslate">`root`</span> and you will see the following output:
+
+<div class="notranslate">
+
+```
+[root ~]# su - test -c "/my/scripts/superbinary"
+I am running without CageFS
+I am running as: test
+Number or records in /etc/passwd: 49
+```
+</div>
+
+Now, enable CageFS for the <span class="notrabslate">`test`</span> user and run the command again:
+
+<div class="notranslate">
+
+```
+[root ~]# cagefsctl --enable test
+[root ~]# su - test -c "/my/scripts/superbinary"
+-bash: /my/scripts/superbinary: No such file or directory
+```
+</div>
+
+As you can see the access to the file is restricted by CageFS.
+
+#### Example 1. Make users in CageFS be able to execute a script which must work outside CageFS
+
+Add the following line into the <span class="notranslate">`/etc/cagefs/custom.proxy.commands`</span>:
+
+<div class="notranslate">
+
+```
+MYSUPERBINARY=/my/scripts/superbinary
+```
+</div>
+
+Then run the <span class="notranslate">`cagefsctl --force-update`</span>, which will place a special wrapper instead of your script inside CageFS. And run your script again:
+
+<div class="notranslate">
+
+```
+[root ~]# su - test -c "/my/scripts/superbinary"
+I am running without CageFS
+I am running as: test
+Number or records in /etc/passwd: 49
+```
+</div>
+
+To compare, let’s count a number of users in the <span class="notranslate">`/etc/passwd`</span> directly:
+
+<div class="notranslate">
+
+```
+[root ~]# su - test -c "cat /etc/passwd | wc -l"
+25
+```
+</div>
+
+**Result**: the script escapes from CageFS and has access to all files which a user with disabled CageFS has.
+
+#### Example 2. Permissions escalation
+
+Let's imagine that you need to give the users the ability to run a script which gets information about their domains from the <span class="notranslate">`apache.conf`</span>. To do that, you need root permissions. You can achieve that with proxyexec.
+
+First, run the following:
+
+<div class="notranslate">
+
+```
+echo "MYSUPERBINARY=root:/my/scripts/superbinary" > /etc/cagefs/custom.proxy.commands
+```
+</div>
+
+And then, run the example script again:
+
+<div class="notranslate">
+
+```
+[root ~]# su - test -c "/my/scripts/superbinary"
+I am running without cagefs
+I am running as: root
+Number or records in /etc/passwd: 49
+```
+</div>
+
+As you can see, the script now works with root permissions, as set in the <span class="notranslate">`custom.proxy.commands`</span> file. In order to get information about a user who runs the script, use the following environment variables:
+
+<div class="notranslate">
+
+```
+PROXYEXEC_UID
+PROXYEXEC_GID
+```
+</div>
+
+**Example**:
+
+<div class="notranslate">
+
+```
+[root ~]# id test
+uid=1226(test) gid=1227(test) groups=1227(test)
+[root ~]# su - test -c "/my/scripts/superbinary"                                                
+I am running without CageFS                                                                          
+I am running as: root
+Number or records in /etc/passwd: 49
+PROXYEXEC_UID=1226
+PROXYEXEC_GID=1227
+```
+</div>
+
+**Result**: users can run the script that gains the root permissions and work outside CageFS. Of course, you can set any other user instead of root in the <span class="notranslate">`custom.proxy.commands`</span>.
+
+#### Example 3. Custom proxyexec wrapper
+
+Let’s modify the test binary in a next way:
+
+
+<div class="notranslate">
+
+```
+
+[root ~]# cat /my/scripts/superbinary
+#!/usr/bin/env bash
+FILE="$1"
+if [[ -e /var/cagefs ]]; then
+  echo "I am running without CageFS"
+else
+  echo "I am running in CageFS"
+fi;
+echo "I am running as: `whoami`"
+echo "Number or records in ${FILE}: `cat ${FILE} | wc -l`"
+echo "PROXYEXEC_UID=${PROXYEXEC_UID}"
+echo "PROXYEXEC_GID=${PROXYEXEC_GID}"
+```
+</div>
+
+Now users can pass any path to the file as an argument. In order to restrict possible parameters (file paths) that users can pass, you can use the custom proxyexec wrapper.
+
+First, duplicate the default wrapper and give it a name, e.g. <span class="notranslate">`cagefs.proxy.mysuperbinary`</span>.
+
+<div class="notranslate">
+
+```
+[root ~]# cp /usr/share/cagefs/safeprograms/cagefs.proxy.program /usr/share/cagefs/safeprograms/cagefs.proxy.mysuperbinary
+```
+</div>
+
+The default wrapper already contains a check that does not allow to run it by the root user:
+
+<div class="notranslate">
+
+```
+#!/bin/bash
+##CageFS proxyexec wrapper - ver 15
+    
+if [[ $EUID -eq 0 ]]; then
+    echo 'Cannot be run as root'
+    exit 1
+fi
+...
+```
+</div>
+
+Add the new check below:
+
+<div class="notranslate">
+
+```
+if [[ $1 == "/etc/passwd" ]]; then                                                    
+    echo "it is not allowed for user to view this file!"                  
+    exit 1      
+fi
+```
+</div>
+
+Now, set a custom binary name in the <span class="notranslate">`custom.proxy.commands`</span>:
+
+<div class="notranslate">
+
+```
+[root ~]# cat /etc/cagefs/custom.proxy.commands
+MYSUPERBINARY:cagefs.proxy.mysuperbinary=root:/my/scripts/superbinary
+```
+</div>
+
+Run skeleton update and check that everything works as expected:
+
+<div class="notranslate">
+
+```
+[root ~]# cagefsctl --force-update
+[root ~]# su - test -c "/my/scripts/superbinary /etc/passwd"
+it is not allowed for user to view this file!
+[root ~]# su - test -c "/my/scripts/superbinary /etc/group"
+I am running without CageFS
+I am running as: root
+Number or records in /etc/group: 76
+PROXYEXEC_UID=1226
+PROXYEXEC_GID=1227
+```
+</div>
+
+::: tip Notes and warnings
+1. Make sure that a directory with your script is not listed in the <span class="notranslate">`/etc/cagefs/cagefs.mp`</span> (is not mounted inside the cage). Otherwise, the proxyexec will not work because CageFS will not be able to replace your script with a special wrapper inside the cage.
+2. Use this feature with caution because it gives users the ability to execute specified commands outside CageFS. SUID commands are extremely dangerous because they are executed not as a user, but as an owner of the file (typically root). You should give users the ability to execute safe commands only. These commands should not have known vulnerabilities. You should check that users cannot use these commands to get sensitive information on a server. You can disable specific dangerous options of programs executed via proxyexec using [filtering options](/cloudlinux_os_components/#filtering-options-for-commands-executed-by-proxyexec).
+3. In cPanel, all the scripts located in the <span class="notranslate">`/usr/local/cpanel/cgi-sys/`</span>, that user might need to execute, should be added to the custom <span class="notranslate">`*.proxy.commands`</span> file.
+:::
 
 #### Custom /etc files per customer
 
@@ -2523,30 +2847,32 @@ $ cagefsctl --tmpwatch
 ```
 </div>
 
-The following path will be cleaned as well:
+The following paths will be cleaned as well:
 
-<span class="notranslate"> _/var/cache/php-eaccelerator_   </span> (actual location <span class="notranslate"> _$USER_HOME/.cagefs/var/cache/php-eaccelerator_ </span> )
+* <span class="notranslate">`/var/cache/php-eaccelerator`</span> (actual location <span class="notranslate">`$USER_HOME/.cagefs/var/cache/php-eaccelerator`</span>)
+* <span class="notranslate">`/opt/alt/phpNN/var/lib/php/session`</span> (actual location <span class="notranslate">`$USER_HOME/.cagefs/opt/alt/phpNN/var/lib/php/session`</span>), where NN corresponds to Alt-PHP version.
 
-You can configure <span class="notranslate"> tmpwatch </span> to clean custom directories inside <span class="notranslate"> CageFS </span> .
 
-Create <span class="notranslate"> _/etc/cagefs/cagefs.ini_ </span> configuration file and specify <span class="notranslate"> _tmpwatch_dirs_ </span> directive as follows:
+You can configure <span class="notranslate">`tmpwatch`</span> to clean custom directories inside <span class="notranslate"> CageFS</span>.
 
-<span class="notranslate"> _tmpwatch_dirs=/dir1,/dir2_ </span>
+Create <span class="notranslate">`/etc/cagefs/cagefs.ini`</span> configuration file and specify <span class="notranslate">`tmpwatch_dirs`</span> directive as follows:
 
-After that directories <span class="notranslate"> _/dir1_ </span> and <span class="notranslate"> _/dir2_ </span> inside CageFS  will be cleaned automatically.
+<span class="notranslate">`tmpwatch_dirs=/dir1,/dir2`</span>
 
-Note that actual location of those directories in real file system is <span class="notranslate"> _$USER_HOME/.cagefs/dir1_ </span> and <span class="notranslate"> _$USER_HOME/.cagefs/dir2_ </span> .
+After that directories <span class="notranslate">`/dir1`</span> and <span class="notranslate">`/dir2`</span> inside CageFS  will be cleaned automatically.
+
+Note that actual location of those directories in real file system is <span class="notranslate">`$USER_HOME/.cagefs/dir1`</span> and <span class="notranslate">`$USER_HOME/.cagefs/dir2`</span>.
 
 **Cleanup PHP sessions**
 
-For cPanel servers, CageFS version 6.0-42 or higher performs cleaning of PHP sessions based on <span class="notranslate"> _session.gc_maxlifetime_ </span> and <span class="notranslate"> _session.save_path_ </span> directives specified in proper <span class="notranslate"> _php.ini_ </span> files.
+For cPanel servers, CageFS version 6.0-42 or higher performs cleaning of PHP sessions based on <span class="notranslate">`session.gc_maxlifetime`</span> and <span class="notranslate">`session.save_path`</span> directives specified in proper <span class="notranslate">`php.ini`</span> files.
 
-<span class="notranslate"> _session.gc_maxlifetime_ </span> directive default value is 1440 seconds. Those session files will be deleted, that were created or had metadata (ctime) changes more time ago than it is specified in <span class="notranslate"> _session.gc_maxlifetime_ .  </span>
+<span class="notranslate">`session.gc_maxlifetime`</span> directive default value is 1440 seconds. Those session files will be deleted, that were created or had metadata (ctime) changes more time ago than it is specified in <span class="notranslate">`session.gc_maxlifetime`</span>.
 
-For <span class="notranslate"> Alt-PHP </span> versions <span class="notranslate"> _session.save_path_ </span> value is normally <span class="notranslate"> _/tmp_ </span> .
+For <span class="notranslate"> Alt-PHP </span> versions <span class="notranslate">`session.save_path`</span> value is normally <span class="notranslate">`/tmp`</span>.
 
 ::: tip Note
-For new installations of Alt-PHP packages, <span class="notranslate"> session.save_path will be changed from /tmp to /opt/alt/phpNN/var/lib/php/session, </span> where NN corresponds to Alt-PHP version.
+For new installations of Alt-PHP packages, <span class="notranslate">`session.save_path`</span> will be changed from `/tmp` to <span class="notranslate">`/opt/alt/phpNN/var/lib/php/session`</span>, where NN corresponds to Alt-PHP version.
 :::
 
 This applies to the following <span class="notranslate"> Alt-PHP </span> versions (or later):
@@ -2765,6 +3091,10 @@ when the size of the `/dev/shm` is specified in percentage of user’s physical 
 
 ### Integration with control panels
 
+* [cPanel](/cloudlinux_os_components/#cpanel)
+* [Plesk](/cloudlinux_os_components/#plesk)
+* [ISPManager](/cloudlinux_os_components/#ispmanager)
+
 CageFS comes with a plugin for various control panels.
 
 The plugin allows to:
@@ -2849,6 +3179,9 @@ When customer is restricted, the customer will be placed into special LVE with I
 
 ### Installation and update
 
+* [Installation](/cloudlinux_os_components/#installation)
+* [Upgrading database server](/cloudlinux_os_components/#upgrading-database-server)
+
 #### Installation
 
 ::: danger IMPORTANT
@@ -2905,6 +3238,11 @@ Please make sure to specify your current <span class="notranslate"> MariaDB </sp
 * 101 — MariaDB v10.1
 * 102 — MariaDB v10.2
 * 103 — MariaDB v10.3 [requires <span class="notranslate"> MySQL Governor 1.2-36+; for cPanel - MySQL Governor 1.2-41+] </span>
+* 104 – MariaDB v10.4 [requires <span class="notranslate">MySQL Governor</span> 1.2-53+; database packages are available in <span class="notranslate">Beta</span> only, so, please use <span class="notranslate">`--install-beta`</span> flag instead of <span class="notranslate">`--install`</span>]
+
+:::tip Note
+MariaDB version 10.4 is not available for CloudLinux 6 yet.
+:::
 
 
 Installation for <span class="notranslate"> Percona Server 5.6 </span> [requires <span class="notranslate"> MySQL Governor </span> 1.1-22+ or 1.2-21+]:
@@ -2944,6 +3282,7 @@ $ /usr/share/lve/dbgovernor/mysqlgovernor.py --install
 |mariadb101 |MariaDB v10.1 |
 |mariadb102 |MariaDB v 10.2 |
 |mariadb103 |MariaDB v 10.3 [requires <span class="notranslate"> MySQL Governor 1.2-36+; for cPanel - MySQL Governor 1.2-41+] </span> |
+|mariadb104 |MariaDB v 10.4 [requires <span class="notranslate">MySQL Governor</span> 1.2-53+; database packages are available in <span class="notranslate">Beta</span> only, so use <span class="notranslate">`--install-beta`</span> flag instead of <span class="notranslate">`--install`</span>]|
 |percona56 | <span class="notranslate"> Percona Server v 5.6 </span> |
 
 Generally, <span class="notranslate"> stable </span> and <span class="notranslate"> beta </span> channels contain different version of MySQL packages - <span class="notranslate"> beta </span> contains newer version than <span class="notranslate"> stable </span> or the same one. If you would like to install  <span class="notranslate"> beta </span>  packages, use  <span class="notranslate"> --install-beta </span>  flag instead of  <span class="notranslate"> --install </span>  when calling installation script:
@@ -3010,6 +3349,13 @@ $ /usr/share/lve/dbgovernor/mysqlgovernor.py --delete
 The script will install original MySQL server, and remove <span class="notranslate">MySQL Governor</span>.
 
 ### Configuration and operation
+
+* [Configuration](/cloudlinux_os_components/#configuration-3)
+* [Modes of operation](/cloudlinux_os_components/#modes-of-operation)
+* [Starting and stopping](/cloudlinux_os_components/#starting-and-stopping)
+* [Mapping a user to a database](/cloudlinux_os_components/#mapping-a-user-to-a-database)
+* [Log files](/cloudlinux_os_components/#log-files)
+* [Change MySQL version](/cloudlinux_os_components/#change-mysql-version)
 
 #### Configuration
 
@@ -3263,7 +3609,6 @@ $ /usr/share/lve/dbgovernor/mysqlgovernor.py --install-beta
 | | |
 |-|-|
 |<span class="notranslate"> auto </span> | default version of MySQL for given OS release (or cPanel settings)|
-|<span class="notranslate"> mysql50   </span> | MySQL v5.0|
 |mysql51 | MySQL v5.1|
 |mysql55 | MySQL v5.5|
 |mysql56 | MySQL v5.6|
@@ -3274,9 +3619,19 @@ $ /usr/share/lve/dbgovernor/mysqlgovernor.py --install-beta
 |mariadb101 | MariaDB v10.1|
 |mariadb102 | MariaDB v 10.2|
 |mariadb103 | MariaDB v 10.3 [requires <span class="notranslate"> MySQL Governor 1.2-36+; for cPanel - MySQL Governor 1.2-41+ </span> ]|
+|mariadb104 |MariaDB v 10.4 [requires <span class="notranslate">MySQL Governor</span> 1.2-53+; database packages are available in <span class="notranslate">Beta</span> only, so use <span class="notranslate">`--install-beta`</span> flag instead of <span class="notranslate">`--install`</span>]||
 |percona56 | Percona v 5.6|
 
 * We don't recommend to downgrade from MySQL v5.6, MariaDB 10.x
+
+
+:::tip Note
+cPanel does not officially support MariaDB 10.4, that is why we don’t recommend to use it on cPanel servers. Use on your own risk for Plesk servers, because downgrade can corrupt your databases.
+:::
+
+:::tip Note
+MariaDB version 10.4 is not available for CloudLinux 6 yet.
+:::
 
 ::: tip Note
 Starting from cPanel & WHM version 70, cPanel supports MySQL 5.7: https://blog.cpanel.com/being-a-good-open-source-community-member-why-we-hesitated-on-mysql-5-7/
@@ -3296,6 +3651,7 @@ See also MySQL Governor [CLI](/command-line_tools/#mysql-governor)
 
 ### Backing up MySQL
 
+* [abrt plugin](/cloudlinux_os_components/#abrt-plugin)
 
 On <span class="notranslate"> cPanel </span> server disable MySQL service monitoring before doing the job:
 <div class="notranslate">
@@ -3413,23 +3769,23 @@ After applying the command MySQL <span class="notranslate">Governor</span> succe
 
 ### General information and requirements
 
-:::warning Note
-To PHP Selector proper operation, make sure you have installed and configured `mod_suexec` package. You can find installation instruction [here](/cloudlinux_os_components/#apache-suexec-module).
-:::
+The main requirements:
 
-<span class="notranslate"> PHP Selector </span> is a CloudLinux component that sits on top of CageFS. It allows each user to select PHP version and module based on their needs. <span class="notranslate"> PHP Selector </span> requires account to have CageFS enabled to work.
-
-<span class="notranslate"> PHP Selector </span> is **compatible** with the following technologies: <span class="notranslate"> _suPHP, mod_fcgid, CGI (suexec), LiteSpeed_ </span> .
-
-It is **not compatible** with <span class="notranslate">`mod_php/DSO`</span>, including <span class="notranslate"> _mod_ruid2_ </span> and <span class="notranslate">`MPM ITK`</span>
+* CageFS is installed
+* Alt-PHP packages are installed
+* Mod_suexec is installed. You can find installation instruction [here](/cloudlinux_os_components/#apache-suexec-module)
+* CageFS is initialized without errors
+* CageFS is enabled for a domain user-owner
+* An appropriate PHP handler is selected for PHP version which is system version. <span class="notranslate"> PHP Selector </span> is **compatible** with the following technologies: <span class="notranslate">_suPHP, mod_fcgid, CGI (suexec), LiteSpeed_</span>. See also [Compatibility Matrix](/limits/#compatibility-matrix).
+* PHP version in the CloudLinux PHP selector does not equal to the Native PHP version
 
 ::: tip Note
 PHP Selector is not supported for H-Sphere.
 :::
 
-See also [Compatibility Matrix](/limits/#compatibility-matrix).
-
 ### Installation and update
+
+* [Update](/cloudlinux_os_components/#update)
 
 The installation of <span class="notranslate"> PHP Selector </span> presumes that you already have  [CageFS](/cloudlinux_os_components/#cagefs) & <span class="notranslate">[LVE Manager](/lve_manager/) installed.</span>
 
@@ -3500,6 +3856,97 @@ This command allows to install newly released versions in <span class="notransla
 :::tip Note
 See also PHP Selector [CLI](/command-line_tools/#php-selector)
 :::
+
+### Installation instructions for cPanel users
+
+1. Install CageFS as root via SSH:
+
+<div class="notranslate">
+
+```
+yum install cagefs
+```
+</div>
+
+2. Install `alt-php` packages as root:
+
+<div class="notranslate">
+
+```
+yum groupinstall alt-php
+```
+</div>
+
+3. Install `mod_suexec` package as root. See installation instructions [here](/cloudlinux_os_components/#installation-5).
+4. Verify that CageFS is initialized successfully.
+
+  * via SSH by running the following command:
+
+  <div class="notranslate">
+
+  ```
+  cagefsctl --check-cagefs-initialized
+  ```
+  </div>
+
+  * via cPanel admin interface
+  
+  Go to <span class="notranslate">cPanel → Admin interface → LVE Manager → Dashboard</span> → click <span class="notranslate">_Refresh_</span>
+
+  ![](/images/cageFS-verify.png)
+
+  If there is a problem you can see _Not initialized_
+
+  ![](/images/not-initialized.png)
+
+5. Initilize CageF (if it is not initialized)
+
+  * Via SSH
+
+  <div clas="code">
+
+  ```
+  cagefsctl --init
+  ```
+  </div>
+
+  * Via cPanel admin interface
+
+    Go to cPanel → <span class="notranslate">Admin interface → LVE manager → Options → CageFS INIT</span>
+
+    ![](/images/CageFS-init.png)
+
+  If CageFS was initialized after refreshing Dashboard you will see that CageFS is enabled:
+
+  ![](/images/CageFS-enabled.png)
+
+6. Enable CageFS to a user
+
+  Go to <span class="notranslate">cPanel → Admin interface → LVE manager → Users</span>
+
+  ![](/images/enable-CageFS-to-user.png)
+
+  * For one user by individual slider (for LVE 1001 in the picture above)
+  * For a group of user by the _CageFS_ button (for LVE 1002 and 1003 in the picture above)
+
+7. Check that system PHP version is not `alt-php` (it should be `ea-php`)
+
+  Go to <span class="notranslate">cPanel → Admin interface → MultiPHP Manager → PHP versions</span>
+
+  ![](/images/check-ea-php.png)
+
+8. Check that an appropriate PHP handler is selected for PHP version which is system version
+
+  Go to <span class="notranslate">cPanel Admin interface → MultiPHP Manager → PHP Handlers</span>
+
+  ![](/images/php-handlers.png)
+
+9. Check version for domain in MultiPHP Selector. It should be equal to the system default version
+
+Go to <span class="notranslate">cPanel Admin interface → MultiPhp Manager → PHP versions</span> → scroll to <span class="notranslate">_Set PHP Version per Domain_</span>
+
+10. Version for domain in User’s interface in PHP Selector should not be equal to the <span class="notranslate">Native</span> version.
+
 
 ### LiteSpeed support
 
@@ -3644,6 +4091,8 @@ You might need to edit/modify wrappers for existing users if you want them to be
 
 ### Uninstalling
 
+* [Disabling PHP extension globally](/cloudlinux_os_components/#disabling-php-extension-globally)
+
 It is not possible to remove <span class="notranslate"> PHP Selector </span> from the system completely as it is an essential part of <span class="notranslate"> LVE Manager </span> and CageFS packages. However, you can make PHP Selector unavailable for cPanel and Plesk users.
 
 To do so, go to <span class="notranslate"> _LVE Manager → PHP Selector_ </span> and check <span class="notranslate"> _Disabled_ as PHP Selector </span> status. Doing so allows you to disable web-interface of the <span class="notranslate"> PHP Selector </span> in the user interface but does not reset custom settings (choosing a version of PHP and modules).
@@ -3682,6 +4131,25 @@ Reinstalling of <span class="notranslate">`alt-php`</span> packages will not res
 
 ### Configuration and using
 
+* [Setting default version and modules](/cloudlinux_os_components/#setting-default-version-and-modules)
+* [Individual PHP.ini files](/cloudlinux_os_components/#individual-php-ini-files)
+* [How to add additional php.ini file for a user inside CageFS](/cloudlinux_os_components/#how-to-add-additional-php-ini-file-for-a-user-inside-cagefs)
+* [Substitute global php.ini for individual customer](/cloudlinux_os_components/#substitute-global-php-ini-for-individual-customer)
+* [How to substitute global php.ini for individual customer on cPanel server with EasyApache4](/cloudlinux_os_components/#how-to-substitute-global-php-ini-for-individual-customer-on-cpanel-server-with-easyapache4)
+* [Managing interpreter version](/cloudlinux_os_components/#managing-interpreter-version)
+* [Including PHP Selector only with some packages - cPanel](/cloudlinux_os_components/#including-php-selector-only-with-some-packages-cpanel)
+* [PHP extensions](/cloudlinux_os_components/#php-extensions)
+* [FFmpeg](/cloudlinux_os_components/#ffmpeg)
+* [Native PHP configuration](/cloudlinux_os_components/#native-php-configuration)
+* [How to configure alt-php72-zts to use with PHP Selector](/cloudlinux_os_components/#how-to-configure-alt-php72-zts-to-use-with-php-selector)
+* [Using](/cloudlinux_os_components/#using)
+* [Custom PHP.ini options](/cloudlinux_os_components/#custom-php-ini-options)
+* [End user files and directories](/cloudlinux_os_components/#end-user-files-and-directories)
+* [Compiling your own extensions](/cloudlinux_os_components/#compiling-your-own-extensions)
+* [Roll your own PHP](/cloudlinux_os_components/#roll-your-own-php)
+* [Detect user's PHP version](/cloudlinux_os_components/#detect-user-s-php-version)
+* [PHP Selector without CageFS](/cloudlinux_os_components/#php-selector-without-cagefs)
+* [Configuring "global” php.ini options for all Alt-PHP versions](/cloudlinux_os_components/#configuring-global%E2%80%9D-php-ini-options-for-all-alt-php-versions)
 
 #### Setting default version and modules
 
@@ -3925,7 +4393,7 @@ You can find more info on ' <span class="notranslate"> Feature Manager </span> '
 
 Once <span class="notranslate"> PHP Selector </span> is enabled, you can find it in the <span class="notranslate"> Feature Manager </span> . Disabling it in <span class="notranslate"> Feature Manager </span> , will remove the icon for users that are using that particular <span class="notranslate"> 'Feature List' </span>
 
-![](/images/screen1-phpselector-featuremanager.png)
+<img src="/images/screen1-phpselector-featuremanager.png" width="478" height="575" />
 
 
 #### PHP extensions
@@ -4547,7 +5015,16 @@ See also PHP Selector [CLI](/command-line_tools/#php-selector)
 
 ### Integration with control panels
 
-This is the list of commands that we use to integrate <span class="notranslate"> PHP Selector </span> with control panels. If you need to integrate <span class="notranslate"> PHP Selector </span> with a custom control panel, you might find all the commands here:
+* [PHP Selector integration with cPanel’s MultiPHP Manager](/cloudlinux_os_components/#php-selector-integration-with-cpanel%E2%80%99s-multiphp-manager)
+* [Overview](/cloudlinux_os_components/#overview)
+* [Prerequisites](/cloudlinux_os_components/#prerequisites)
+* [Configuration](/cloudlinux_os_components/#configuration-4)
+* [More about PHP Selector’s configuration](/cloudlinux_os_components/#more-about-php-selector%E2%80%99s-configuration)
+  * [Setting up the PHP version on customer’s end (in cPanel)](/cloudlinux_os_components/#setting-up-the-php-version-on-customer%E2%80%99s-end-in-cpanel)
+  * [PHP directives and their priorities](/cloudlinux_os_components/#php-directives-and-their-priorities)
+  * [PHP version in the command-line interface (CLI)](/cloudlinux_os_components/#php-version-in-the-command-line-interface-cli)
+
+This is the list of commands that we use to integrate <span class="notranslate">PHP Selector</span> with control panels.
 
 **PHP summary:**
 
@@ -4888,6 +5365,19 @@ See also [PHP Selector CLI tools](/command-line_tools/#php-selector).
 
 Large number of PHP extensions are bundled with each version of PHP.
 
+* [PHP 4.4 extensions](/cloudlinux_os_components/#php-4-4-extensions)
+* [PHP 5.1 extensions](/cloudlinux_os_components/#php-5-1-extensions)
+* [PHP 5.2 extensions](/cloudlinux_os_components/#php-5-2-extensions)
+* [PHP 5.3 extensions](/cloudlinux_os_components/#php-5-3-extensions)
+* [PHP 5.4 extensions](/cloudlinux_os_components/#php-5-4-extensions)
+* [PHP 5.5 extensions](/cloudlinux_os_components/#php-5-5-extensions)
+* [PHP 5.6 extensions](/cloudlinux_os_components/#php-5-6-extensions)
+* [PHP 7.0 extensions](/cloudlinux_os_components/#php-7-0-extensions)
+* [PHP 7.1 extensions](/cloudlinux_os_components/#php-7-1-extensions)
+* [PHP 7.2 extensions](/cloudlinux_os_components/#php-7-2-extensions)
+* [PHP 7.3 extensions](/cloudlinux_os_components/#php-7-3-extensions)
+* [PHP 7.4 extensions](/cloudlinux_os_components/#php-7-4-extensions)
+
 #### PHP 4.4 extensions
 
 
@@ -4895,7 +5385,7 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|bcmath <br>bz2 <br>calendar <br>ctype <br>curl <br>dba <br>dbase <br>dbx <br>domxml <br>exif <br>fileinfo | ftp <br>gd <br>gettext <br>gmp <br>iconv <br>imap <br>interbase <br>ioncube_loader <br>ioncube_loader_4 <br>json <br>ldap  | mbstring <br>mcrypt <br>mhash <br>mysql <br>ncurses <br>odbc <br>openssl <br>overload <br>pcntl <br>pcre <br>pgsql  | posix <br>pspell <br>readline <br>recode <br>session <br>shmop <br>snmp <br>sockets <br>sourceguardian <br>standard <br>sybase_ct <br>sysvmsg  | sysvsem <br>sysvshm <br>tokenizer <br>wddx <br>xml <br>xmlrpc <br>zlib|
+|bcmath <br>bz2 <br>calendar <br>ctype <br>curl <br>dba <br>dbase <br>dbx <br>domxml <br>exif <br>fileinfo | ftp <br>gd <br>gettext <br>gmp <br>iconv <br>imap <br>interbase <br>ioncube_loader <br>ioncube_loader_4<br> ioncube_loader_5 <br>json <br>ldap  | mbstring <br>mcrypt <br>mhash <br>mysql <br>ncurses <br>odbc <br>openssl <br>overload <br>pcntl <br>pcre <br>pgsql  | posix <br>pspell <br>readline <br>recode <br>session <br>shmop <br>snmp <br>sockets <br>sourceguardian <br>standard <br>sybase_ct <br>sysvmsg  | sysvsem <br>sysvshm <br>tokenizer <br>wddx <br>xml <br>xmlrpc <br>zlib|
 </div>
 
 #### PHP 5.1 extensions
@@ -4905,7 +5395,7 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|bcmath <br>big_int <br>bitset <br>bz2 <br>bz2_filter <br>calendar <br>coin_acceptor <br>crack <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dom <br>doublemetaphone <br>exif <br>ftp <br>gd <br>geoip | gettext <br>gmagick <br>gmp <br>gnupg <br>haru <br>hash <br>huffman <br>iconv <br>idn <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>ioncube_loader <br>ioncube_loader_4 <br>ldap <br>libxml  | lzf <br>mbstring <br>mcrypt <br>memcache <br>msgpack <br>mysql <br>mysqli <br>ncurses <br>odbc <br>openssl <br>pcntl <br>pcre <br>pdo <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite  | pgsql <br>posix <br>pspell <br>quickhash <br>radius <br>readline <br>redis <br>reflection <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>ssh2 <br>standard <br>stats  | stem <br>sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>translit <br>wddx <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>zlib |
+|bcmath <br>big_int <br>bitset <br>bz2 <br>bz2_filter <br>calendar <br>coin_acceptor <br>crack <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dom <br>doublemetaphone <br>exif <br>ftp <br>gd <br>geoip | gettext <br>gmagick <br>gmp <br>gnupg <br>haru <br>hash <br>huffman <br>iconv <br>idn <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>ioncube_loader <br>ioncube_loader_4 <br> ioncube_loader_5 <br>ldap <br>libxml  | lzf <br>mbstring <br>mcrypt <br>memcache <br>msgpack <br>mysql <br>mysqli <br>ncurses <br>odbc <br>openssl <br>pcntl <br>pcre <br>pdo <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br> pdo_oci | pgsql <br>posix <br>pspell <br>quickhash <br>radius <br>readline <br>redis <br>reflection <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>ssh2 <br>standard <br>stats  | stem <br>sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>translit <br>wddx <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>zlib |
 </div>
 
 #### PHP 5.2 extensions
@@ -4915,7 +5405,7 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apc <br>apm <br>ares <br>bcmath <br>bcompiler <br>big_int <br>bitset <br>bloomy <br>bz2 <br>bz2_filter <br>calendar <br>coin_acceptor <br>crack <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br>eaccelerator <br>enchant <br>exif <br>ffmpeg <br>fileinfo <br>filter | ftp <br>gd <br>gender <br>geoip <br>gettext <br>gmagick <br>gmp <br>gnupg <br>haru <br>hash <br>hidef <br>htscanner <br>huffman <br>iconv <br>idn <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br>json <br>ldap <br>libxml <br>lzf  | magickwand <br>mailparse <br>mbstring <br>mcrypt <br>memcache <br>memcached <br>mhash <br>mongo <br>msgpack <br>mssql <br>mysql <br>mysqli <br>ncurses <br>oauth <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite  | pgsql <br>phar <br>posix <br>pspell <br>quickhash <br>radius <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>spl_types <br>sqlite <br>ssh2 <br>standard <br>stats <br>stem <br>stomp  | suhosin <br>sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>translit <br>uploadprogress <br>uuid <br>wddx <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br>yaf <br>yaz <br>zend_optimizer <br>zip <br>zlib|
+|apc <br>apm <br>ares <br>bcmath <br>bcompiler <br>big_int <br>bitset <br>bloomy <br>bz2 <br>bz2_filter <br>calendar <br>coin_acceptor <br>crack <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br>eaccelerator <br>enchant <br>exif <br>ffmpeg <br>fileinfo <br>filter <br> ftp | gd <br>gender <br>geoip <br>gettext <br>gmagick <br>gmp <br>gnupg <br> geos <br>haru <br>hash <br>hidef <br>htscanner <br>huffman <br> http <br>iconv <br>idn <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br> ioncube_loader_5 <br>json <br>ldap <br>libxml | lzf <br> magickwand <br>mailparse <br>mbstring <br>mcrypt <br>memcache <br>memcached <br>mhash <br>mongo <br>msgpack <br>mssql <br>mysql <br>mysqli <br>ncurses <br>oauth <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br> pdo_oci | pgsql <br>phar <br>posix <br>pspell <br>quickhash <br>radius <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>spl_types <br>sqlite <br>ssh2 <br>standard <br>stats <br>stem <br>stomp  | suhosin <br>sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>translit <br>uploadprogress <br>uuid <br>wddx <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br> xhprof <br>yaf <br>yaz <br>zend_optimizer <br>zip <br>zlib|
 </div>
 
 #### PHP 5.3 extensions
@@ -4925,7 +5415,7 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apc <br>apcu <br>apm <br>ares <br>bcmath <br>bcompiler <br>big_int <br>bitset <br>bloomy <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>clamav <br>coin_acceptor <br>core <br>crack <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br>eaccelerator <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo| filter <br>ftp <br>functional <br>gd <br>gender <br>geoip <br>gettext <br>gmagick <br>gmp <br>gnupg <br>haru <br>hash <br>hidef <br>htscanner <br>http <br>huffman <br>iconv <br>idn <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br>jsmin <br>json <br>ldap <br>libevent <br>libxml <br>lzf | magickwand <br>mailparse <br>mbstring <br>mcrypt <br>memcache <br>memcached <br>mhash <br>mongo <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pgsql <br>phalcon <br>phar  | posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>spl_types <br>sqlite <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp <br>suhosin <br>sybase_ct <br>sysvmsg <br>sysvsem| sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br>translit <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br>yaf <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq|
+|apc <br>apcu <br>apm <br>ares <br>bcmath <br>bcompiler <br>big_int <br>bitset <br>bloomy <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>clamav <br>coin_acceptor <br>core <br>crack <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br>eaccelerator <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo <br> filter <br>ftp | functional <br> gd <br>gender <br>geoip <br> geos <br> gettext <br>gmagick <br>gmp <br>gnupg <br>haru <br>hash <br>hidef <br>htscanner <br>http <br>huffman <br>iconv <br>idn <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br> ioncube_loader_5 <br> jsmin <br>json <br>ldap <br>libevent <br>libxml <br>lzf | magickwand <br>mailparse <br>mbstring <br>mcrypt <br>memcache <br>memcached <br>mhash <br>mongo <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br> pdo_oci <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br> pgsql | phalcon <br>phar <br> posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br> solr <br>spl <br>spl_types <br>sqlite <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp <br>suhosin | sybase_ct <br>sysvmsg <br> sysvsem <br> sysvshm <br>tidy <br> tideways <br>timezonedb <br>tokenizer <br>trader <br>translit <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br> xhprof <br>yaf <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq|
 </div>
 
 #### PHP 5.4 extensions
@@ -4935,7 +5425,7 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apc <br>apcu <br>apm <br>ares <br>bcmath <br>big_int <br>bitset <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>clamav <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br>eaccelerator <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo <br>filter <br>ftp <br>functional <br>gd | gender <br>geoip <br>gettext <br>gmagick <br>gmp <br>gnupg <br>haru <br>hash <br>hidef <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br>jsmin <br>json <br>ldap <br>libevent <br>libsodium <br>libxml <br>lzf <br>magickwand <br>mailparse <br>mbstring| mcrypt <br>memcache <br>memcached <br>mhash <br>mongo <br>mongodb <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pgsql <br>phalcon <br>phar  | posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>spl_types <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp <br>suhosin <br>sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy | timezonedb <br>tokenizer <br>trader <br>translit <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br>yaf <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq|
+|apc <br>apcu <br>apm <br>ares <br>bcmath <br>big_int <br>bitset <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>clamav <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br>eaccelerator <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo <br>filter <br>ftp <br>functional <br>gd <br> gender | geoip <br> geos <br>gettext <br>gmagick <br>gmp <br>gnupg <br>haru <br>hash <br>hidef <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inclued <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br> ioncube_loader_5 <br>json <br>ldap <br>libevent <br>libsodium <br>libxml <br>lzf <br> luasandbox <br>magickwand <br>mailparse <br>mbstring| mcrypt <br>memcache <br>memcached <br>mhash <br>mongo <br>mongodb <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br> pdo_oci <br>pgsql <br>phalcon <br>phar  | posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br> solr <br>sourceguardian <br>spl <br>spl_types <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp <br>suhosin <br>sybase_ct <br>sysvmsg | sysvsem <br>sysvshm <br>tidy <br> tideways <br> timezonedb <br>tokenizer <br>trader <br>translit <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br> xhprofjsmin <br> yaf <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq|
 </div>
 
 #### PHP 5.5 extensions
@@ -4945,8 +5435,9 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apcu <br>apm <br>ares <br>bcmath <br>big_int <br>bitset <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>clamav <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo <br>filter <br>ftp <br>gd <br>gender <br>geoip | gettext <br>gmagick <br>gmp <br>gnupg <br>gRPC <br>haru <br>hash <br>hidef <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br>jsmin <br>json <br>ldap <br>libevent <br>libsodium <br>libxml <br>lzf <br>magickwand <br>mailparse <br>mbstring <br>mcrypt | memcache <br>memcached <br>mhash <br>mongo <br>mongodb <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pgsql | phalcon <br>phalcon3 <br>phar <br>posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>spl_types <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp <br>suhosin | sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br>translit <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br>yaf <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq |
+|apcu <br>apm <br>ares <br>bcmath <br>big_int <br>bitset <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>clamav <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dbx <br>dom <br>doublemetaphone <br> diseval <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo <br>filter <br>ftp <br>gd <br>gender <br>geoip | geos <br> gettext <br>gmagick <br>gmp <br>gnupg <br>gRPC <br>haru <br>hash <br>hidef <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br> ioncube_loader_5 <br>jsmin <br>json <br>ldap <br>libevent <br>libsodium <br>libxml <br>lzf <br> luasandbox <br>magickwand <br>mailparse <br>mbstring <br>mcrypt | memcache <br>memcached <br>mhash <br>mongo <br>mongodb <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br> pdo_oci <br>pgsql | phalcon <br>phalcon3 <br>phar <br>posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br> solr <br>spl <br>spl_types <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp <br>suhosin | sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br> tideways <br>timezonedb <br>tokenizer <br>trader <br>translit <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br> xhprof <br>yaf <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq |
 </div>
+
 
 #### PHP 5.6 extensions
 
@@ -4955,7 +5446,7 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apcu <br>apm <br>ares <br>bcmath <br>big_int <br>bitset <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dbx <br>dom <br>doublemetaphone <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo <br>filter <br>ftp <br>gd <br>gender <br>geoip <br>gettext | gmagick <br>gmp <br>gnupg <br>gRPC <br>haru <br>hash <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br>jsmin <br>json <br>ldap <br>libevent <br>libsodium <br>libxml <br>lzf <br>mailparse <br>mbstring <br>mcrypt <br>memcache <br>memcached <br>mhash | mongo <br>mongodb <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pgsql <br>phalcon <br>phalcon3 | phar <br>posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>spl_types <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp | suhosin <br>sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br>translit <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq|
+|apcu <br>apm <br>ares <br>bcmath <br>big_int <br>bitset <br>brotli <br>bz2 <br>bz2_filter <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dbx <br>dom <br>doublemetaphone <br> diseval <br>eio <br>enchant <br>ereg <br>exif <br>ffmpeg <br>fileinfo <br>filter <br>ftp <br>gd <br>gender <br>geoip <br>gettext | geos <br> gmagick <br>gmp <br>gnupg <br>gRPC <br>haru <br>hash <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>ioncube_loader_4 <br> ioncube_loader_5 <br> jsmin <br>json <br>ldap <br>libevent <br>libsodium <br>libxml <br>lzf <br> luasandbox <br>mailparse <br>mbstring <br>mcrypt <br>memcache <br>memcached <br>mhash | mongo <br>mongodb <br>msgpack <br>mssql <br>mysql <br>mysqli <br>mysqlnd <br>ncurses <br>nd_mysql <br>nd_mysqli <br>nd_pdo_mysql <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br> pdo_oci <br>pgsql <br>phalcon <br>phalcon3 | phar <br>posix <br>propro <br>pspell <br>quickhash <br>radius <br>raphf <br>rar <br>readline <br>recode <br>redis <br>reflection <br>rsync <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>spl_types <br>sqlite3 <br>ssh2 <br>standard <br>stats <br>stem <br>stomp <br> solr | suhosin <br>sybase_ct <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br>translit <br> tideways <br>uploadprogress <br>uri_template <br>uuid <br>wddx <br>weakref <br>xcache_3 <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xrange <br>xsl <br> xhprof <br>yaml <br>yaz <br>zend_guard_loader <br>zip <br>zlib <br>zmq|
 </div>
 
 #### PHP 7.0 extensions
@@ -4965,11 +5456,13 @@ Large number of PHP extensions are bundled with each version of PHP.
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apcu <br>bcmath <br>bitset <br>brotli <br>bz2 <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dom <br>eio <br>enchant <br>exif <br>fileinfo <br>filter <br>ftp <br>gd <br>gender | geoip <br>gettext <br>gmagick <br>gmp <br>gnupg <br>gRPC <br>hash <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>json <br>ldap <br>libsodium <br>libxml <br>lzf <br>mailparse <br>mbstring <br>mcrypt | memcached <br>mongodb <br>mysqli <br>mysqlnd <br>nd_mysqli <br>nd_pdo_mysql <br>_newrelic_ <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pdo_sqlsrv <br>pgsql <br>phalcon3 <br>phar | posix <br>propro <br>pspell <br>raphf <br>rar <br>readline <br>redis <br>reflection <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>sqlite3 <br>sqlsrv <br>ssh2 <br>standard <br>stats <br>suhosin <br>sysvmsg | sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br>uploadprogress <br>uuid <br>vips <br>wddx <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>yaml <br>yaz <br>zip <br>zlib <br>zmq|
+|apcu <br>bcmath <br>bitset <br>brotli <br>bz2 <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dom <br> diseval <br>eio <br>enchant <br>exif <br>fileinfo <br>filter <br>ftp <br> ffmpeg <br>gd <br>gender <br> geos | geoip <br>gettext <br>gmagick <br>gmp <br>gnupg <br>gRPC <br>hash <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>json <br>ldap <br>libsodium <br>libxml <br>lzf <br> luasandbox  <br>mailparse <br>mbstring <br>mcrypt | memcached <br> memcache <br>mongodb <br>mysqli <br>mysqlnd <br>nd_mysqli <br>nd_pdo_mysql <br>_newrelic_ <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pdo_sqlsrv <br> pdo_oci  <br>pgsql <br>phalcon3 <br>phar | posix <br>propro <br>pspell <br> phalcon4 <br>raphf <br>rar <br>readline <br>redis <br>reflection <br> recode <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br> solr <br>spl <br>sqlite3 <br>sqlsrv <br>ssh2 <br>standard <br>stats <br>suhosin <br>sysvmsg | swoole <br> sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br> tideways <br>uploadprogress <br>uuid <br>vips <br>wddx <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>yaml <br>yaz <br> yaf <br>zip <br>zlib <br>zmq|
 </div>
 
-* Please note that to use <span class="notranslate"> **newrelic** </span> extension you should set your own <span class="notranslate"> _New Relic License Key_ </span> in your own <span class="notranslate"> _/opt/alt/php7*/etc/php.ini_ </span> file.
-Please find more info about <span class="notranslate"> New Relic License Key </span> in the <span class="notranslate"> [New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key) </span>.
+::: tip Note
+To use <span class="notranslate">`newrelic`</span> extension you should set your own <span class="notranslate">`New Relic License Key`</span> in your own <span class="notranslate">`/opt/alt/php7*/etc/php.ini`</span> file.
+Please find more info about <span class="notranslate">New Relic License Key</span> in the <span class="notranslate">[New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key)</span>.
+:::
 
 
 #### PHP 7.1 extensions
@@ -4979,11 +5472,14 @@ Please find more info about <span class="notranslate"> New Relic License Key </s
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apcu <br>bcmath <br>brotli <br>bz2 <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dom <br>eio <br>enchant <br>exif <br>fileinfo <br>filter <br>ftp <br>gd <br>gender <br>geoip <br>gettext | gmagick <br>gmp <br>gnupg <br>gRPC <br>hash <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>json <br>ldap <br>libsodium <br>libxml <br>lzf <br>mailparse <br>mbstring <br>mcrypt <br>memcached | mongodb <br>mysqli <br>mysqlnd <br>nd_mysqli <br>nd_pdo_mysql <br>_newrelic_ <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pdo_sqlsrv <br>pgsql <br>phalcon3 <br>phar  | posix <br>propro <br>pspell <br>raphf <br>rar <br>readline <br>redis <br>reflection <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>sqlite3 <br>sqlsrv <br>ssh2 <br>standard <br>stats <br>suhosin <br>sysvmsg | sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br>uploadprogress <br>uuid <br>vips <br>wddx <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>yaml <br>zip <br>zlib <br>zmq|
+|40-snuffleupagus <br> 40-vld <br> apcu <br>bcmath <br>brotli <br>bz2 <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dbase <br>dom <br> diseval <br>eio <br>enchant <br>exif <br>fileinfo <br>filter <br>ftp <br> ffmpeg <br>gd <br>gender <br>geoip <br>gettext | geos <br> gmagick <br>gmp <br>gnupg <br>gRPC <br>hash <br>htscanner <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>json <br>ldap <br>libsodium <br>libxml <br>lzf <br> luasandbox <br>mailparse <br>mbstring <br>mcrypt <br>memcached | memcache <br> mongodb <br>mysqli <br>mysqlnd <br>nd_mysqli <br>nd_pdo_mysql <br>_newrelic_ <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pdo_sqlsrv <br>pgsql <br>phalcon3 <br>phar <br> pdf | pdo_oci <br> phalcon4 <br> posix <br>propro <br>pspell <br>raphf <br>rar <br>readline <br>redis <br>reflection <br> recode <br> solr <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>sourceguardian <br>spl <br>sqlite3 <br>sqlsrv <br>ssh2 <br>standard <br>stats <br>suhosin <br>sysvmsg | swoole <br> sysvsem <br>sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br> tideways <br>uploadprogress <br>uuid <br>vips <br>wddx <br>xdebug <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>yaml <br> yaf <br>zip <br>zlib <br>zmq|
 </div>
 
-* Please note that to use <span class="notranslate"> **newrelic** </span> extension you should set your own <span class="notranslate"> _New Relic License Key_ </span> in your own <span class="notranslate"> _/opt/alt/php7*/etc/php.ini_ </span> file.
-Please find more info about <span class="notranslate"> New Relic License Key </span> in the <span class="notranslate"> [New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key) </span>.
+
+::: tip Note
+To use <span class="notranslate">`newrelic`</span> extension you should set your own <span class="notranslate">`New Relic License Key`</span> in your own <span class="notranslate">`/opt/alt/php7*/etc/php.ini`</span> file.
+Please find more info about <span class="notranslate">New Relic License Key</span> in the <span class="notranslate">[New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key)</span>.
+:::
 
 #### PHP 7.2 extensions
 
@@ -4992,11 +5488,13 @@ Please find more info about <span class="notranslate"> New Relic License Key </s
 
 | |  |  |  | |
 |-|-|-|-|-|
-|apcu <br>bcmath <br>brotli <br>bz2 <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dom <br>eio <br>enchant <br>exif <br>fileinfo <br>filter <br>ftp <br>gd <br>gender <br>geoip <br>gettext | gmagick <br>gmp <br>gnupg <br>gRPC <br>hash <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>json <br>ldap <br>libxml <br>lzf <br>mailparse <br>mbstring <br>memcached <br>mongodb | mysqli <br>mysqlnd <br>nd_mysqli <br>nd_pdo_mysql <br>_newrelic_ <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pdo_sqlsrv <br>pgsql <br>phalcon3 <br>phar | posix <br>propro <br>pspell <br>raphf <br>readline <br>redis <br>reflection <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>spl <br>sqlite3 <br>sqlsrv <br>ssh2 <br>standard <br>stats <br>sysvmsg <br>sysvsem | sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br>uploadprogress <br>uuid <br>vips <br>wddx <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>yaml <br>zip <br>zlib <br>zmq|
+| 40-snuffleupagus <br> 40-vld <br> apcu <br>bcmath <br>brotli <br>bz2 <br>calendar <br>core <br>ctype <br>curl <br>date <br>dba <br>dom <br> dbase <br> diseval  <br>eio <br>enchant <br>exif <br>fileinfo <br>filter <br>ftp <br> ffmpeg <br>gd <br>gender <br>geoip <br>gettext | geos <br> gmagick <br>gmp <br>gnupg <br>gRPC <br>hash <br>http <br>iconv <br>igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>ioncube_loader <br>json <br>ldap <br>libxml <br>lzf <br>  luasandbox <br> mcrypt <br> memcache <br> mailparse <br>mbstring <br>memcached <br>mongodb | mysqli <br>mysqlnd <br>nd_mysqli <br>nd_pdo_mysql <br>_newrelic_ <br>oauth <br>oci8 <br>odbc <br>opcache <br>openssl <br>pcntl <br>pcre <br>pdo <br>pdo_dblib <br>pdo_firebird <br> pdf <br> pdo_oci <br> phalcon4  <br> pdo_mysql <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pdo_sqlsrv <br>pgsql <br>phalcon3 <br>phar | posix <br>propro <br>pspell <br>raphf <br>readline <br>redis <br>reflection <br> recode <br> sodium <br> sourceguardian <br> swoole  <br>session <br>shmop <br>simplexml <br>snmp <br>soap <br>sockets <br>spl <br>sqlite3 <br>sqlsrv <br>ssh2 <br>standard <br>stats <br>sysvmsg <br>sysvsem | sysvshm <br>tidy <br>timezonedb <br>tokenizer <br>trader <br> tideways <br>uploadprogress <br>uuid <br>vips <br>wddx <br>xml <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br> xdebug <br> yaf <br>yaml <br>zip <br>zlib <br>zmq|
 </div>
 
-* Please note that to use <span class="notranslate"> **newrelic** </span> extension you should set your own <span class="notranslate"> _New Relic License Key_ </span> in your own <span class="notranslate"> _/opt/alt/php7*/etc/php.ini_ </span> file.
-Please find more info about <span class="notranslate"> New Relic License Key </span> in the <span class="notranslate"> [New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key) </span>.
+::: tip Note 
+To use <span class="notranslate">`newrelic`</span> extension you should set your own <span class="notranslate">`New Relic License Key`</span> in your own <span class="notranslate">`/opt/alt/php7*/etc/php.ini`</span> file.
+You can find more info about <span class="notranslate">New Relic License Key</span> in the <span class="notranslate">[New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key)</span>.
+:::
 
 
 #### PHP 7.3 extensions
@@ -5004,15 +5502,27 @@ Please find more info about <span class="notranslate"> New Relic License Key </s
 
 <div class="notranslate">
 
-| |  |  |  | |
-|-|-|-|-|-|
-|apcu <br>bcmath <br>dba <br>dbase <br>dom <br>eio <br>enchant <br>fileinfo <br>gd <br>gender <br>geoip <br>gmagick <br>gnupg <br>grpc <br>http  | igbinary <br>imagick <br>imap <br>inotify <br>interbase <br>intl <br>json <br>ldap <br>lzf <br>mailparse <br>mbstring <br>memcached <br>mongodb <br>mysqlnd <br>nd_mysqli | nd_pdo_mysql <br>_newrelic_ <br>oauth <br>oci8 <br>odbc <br>opcache <br>pdf <br>pdo <br>pdo_dblib <br>pdo_firebird <br>pdo_oci <br>pdo_odbc <br>pdo_pgsql <br>pdo_sqlite <br>pdo_sqlsrv <br>pgsql | phar <br>posix <br>propro <br>pspell <br>raphf <br>redis <br>snmp <br>soap <br>sockets <br>sqlsrv <br>ssh2 <br>stats <br>sysvmsg <br>sysvsem <br>sysvshm <br>tidy | timezonedb <br>trader <br>uploadprogress <br>uuid <br>vips <br>wddx <br>xdebug <br>xmlreader <br>xmlrpc <br>xmlwriter <br>xsl <br>yaf <br>yaml <br>zip <br>zmq|
+| |  |  |  | | |
+|-|-|-|-|-|-|
+|40-snuffleupagus <br> 40-vld <br> apcu <br> bz2 <br> calendar <br> core <br> ctype <br> curl <br> date <br> exif <br>enchant <br> filter <br> ftp <br> gettext <br> gmp <br>gnupg <br> hash <br> iconv <br> interbase <br> luasandbox | libxml <br>mysqlnd <br>opcache <br> openssl <br> pcntl <br> pcre <br>pdo_pgsql <br> phar <br> readline <br> reflection <br> session <br> shmop <br> simplexml <br> sourceguardian <br> spl <br> sqlite3 <br>standard <br> snmp <br> stats <br> tokenizer | trader <br>xmlreader <br>bcmath <br>fileinfo <br> grpc <br>intl <br>lzf <br>nd_mysqli <br>pdf <br>pdo <br>posix <br>swoole <br>uploadprogress <br>xmlrpc <br>brotli <br>gd <br>http <br>ioncube_loader <br> mbstring | nd_pdo_mysql <br>pdo_dblib <br>pdo_sqlite <br>propro <br>soap <br>sysvmsg <br>uuid <br>xmlwriter <br>dbase <br>gender <br>igbinary <br>mcrypt <br>newrelic <br> pdo_firebird <br>pdo_sqlsrv <br>pspell <br>sockets <br>sysvsem <br>vips <br>xsl | dba <br>geoip <br>imagick <br>json <br>memcached <br>oauth <br>pdo_mysql <br>pgsql <br> raphf <br>sodium <br>sysvshm <br>yaml <br>dom <br>geos <br>imap <br>ldap <br>mongodb <br>oci8 <br>pdo_oci | phalcon3 <br>recode <br>sqlsrv <br> tidy <br>wddx <br>yaz <br>eio <br>gmagick <br>inotify <br>leveldb <br>mysqli <br>odbc <br>pdo_odbc <br>phalcon4 <br>redis <br>ssh2 <br>timezonedb <br>xdebug <br>zip <br> xml <br> zlib| 
+
 </div>
 
 :::tip Note
 To use <span class="notranslate">`newrelic`</span> extension you should set your own <span class="notranslate">`New Relic License Key`</span> in your own <span class="notranslate">`/opt/alt/php7*/etc/php.ini`</span> file.
-You can find more info about <span class="notranslate">New Relic License Key</span> in the <span class="notranslate"> [New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key)</span>.
+You can find more info about <span class="notranslate">New Relic License Key</span> in the <span class="notranslate">[New Relic documentation](https://docs.newrelic.com/docs/accounts/install-new-relic/account-setup/license-key)</span>.
 :::
+
+#### PHP 7.4 extensions
+
+
+<div class="notranslate">
+
+| |  |  |  | |
+|-|-|-|-|-|
+|apcu <br> bcmath <br> brotli <br> bz2 <br> calendar <br> core <br> ctype <br> curl <br> date <br> dba <br> dbase <br> dom <br> eio <br> enchant <br> exif <br> fileinfo <br> filter <br> ftp <br> gd <br> gender <br> geoip <br> geos | gettext <br> gmagick <br> gmp <br> gnupg <br> grpc <br> hash <br> http <br> iconv <br> igbinary <br> imagick <br> imap <br> inotify <br> intl <br> json <br> ldap <br> libxml <br> luasandbox <br> lzf <br> mbstring <br> memcached <br> mongodb | mysqli <br> mysqlnd <br> nd_mysqli <br> nd_pdo_mysql <br> newrelic <br> oauth <br> oci8 <br> odbc <br> opcache <br> openssl <br> pcntl <br> pcre <br> pdf <br> pdo <br> pdo_dblib <br> pdo_firebird <br> pdo_mysql <br> pdo_oci <br> pdo_odbc <br> pdo_pgsql <br> pdo_sqlite <br> pdo_sqlsrv | pgsql <br> phalcon4 <br> phar <br> posix <br> propro <br> pspell <br> raphf <br> readline <br> redis <br> reflection <br> session <br> shmop <br> simplexml <br> snmp <br> soap <br> sockets <br> sodium <br> spl <br> sqlite3 <br> sqlsrv <br> standard | stats <br> swoole <br> sysvmsg <br> sysvsem <br> sysvshm <br> tidy <br> timezonedb <br> tokenizer <br> trader <br> uploadprogress <br> uuid <br> vips <br> xdebug <br> xml <br> xmlreader <br> xmlrpc <br> xmlwriter <br> xsl <br> yaml <br> zip <br> zlib |
+</div>
+
 
 ## Python Selector
 
@@ -5024,6 +5534,8 @@ This documentation is for the new version of Python Selector. You can find docum
 ### General information and requirements
 
 <span class="notranslate">Python Selector</span> is a CloudLinux component that allows each user to easily deploy and manage Python applications via application server.
+
+* [Requirements](/cloudlinux_os_components/#requirements-2)
 
 #### Requirements
 
@@ -5046,6 +5558,8 @@ Do not downgrade LVE Manager to versions lower than 4.2.2 if you have already mi
 
 
 ### Migration to the new Python Selector 
+
+* [How to migrate an application to the new Python Selector](/cloudlinux_os_components/#how-to-migrate-an-application-to-the-new-python-selector)
 
 The new Python Selector has a bunch of new features:
 
@@ -5088,6 +5602,9 @@ If you face any issue during the migration, please [contact our support team](ht
 ### Installation and update
 
 New clients can install Python Selector using the [CloudLinux Installation Wizard](/lve_manager/#cloudlinux-installation-wizard).
+
+* [cPanel](/cloudlinux_os_components/#cpanel-2)
+* [DirectAdmin](/cloudlinux_os_components/#directadmin)
 
 #### cPanel
 
@@ -5165,6 +5682,9 @@ cagefsctl --force-update
 * See also [Python Selector CLI](/command-line_tools/#python-selector).
 
 ### Deploying Trac using Python Selector
+
+* [Trac with MySQL](/cloudlinux_os_components/#trac-with-mysql)
+* [EasyApache 4](/cloudlinux_os_components/#easyapache-4)
 
 1. In <span class="notranslate">**Setup Python App**</span> create an application. <span class="notranslate">Trac</span> project <span class="notranslate">WSGI</span> script will be located in <span class="notranslate">**App Directory**</span> (e.g. <span class="notranslate">`trac`</span>).
 
@@ -5538,6 +6058,11 @@ See also Ruby Selector [CLI](/command-line_tools/#ruby-selector)
 
 ### Configuration and using
 
+* [End user access](/cloudlinux_os_components/#end-user-access-2)
+* [Hide Ruby Selector icon](/cloudlinux_os_components/#hide-ruby-selector-icon)
+* [Deploying Redmine using Ruby Selector](/cloudlinux_os_components/#deploying-redmine-using-ruby-selector)
+* [EasyApache 4](/cloudlinux_os_components/#easyapache-4-2)
+
 #### End user access
 
 1. In <span class="notranslate">_Software/Services_</span> area choose <span class="notranslate">_Select Ruby Environment_</span>.
@@ -5747,6 +6272,8 @@ See also [Ruby Selector CLI tools](/command-line_tools/#ruby-selector).
 ## Node.js Selector
 ### General information and requirements
 
+* [Requirements](/cloudlinux_os_components/#requirements-3)
+
 <span class="notranslate"> Node.js Selector </span>  is a CloudLinux component that allows each user to easily create Node.js applications, choose Node.js version and other parameters for applications based on their needs.
 
 #### **Requirements**
@@ -5770,7 +6297,7 @@ To use <span class="notranslate">Node.js Selector</span>, install <span class="n
 <div class="notranslate">
 
 ```
-yum groupinstall alt-nodejs6 alt-nodejs8 alt-nodejs9
+yum groupinstall alt-nodejs
 ```
 </div>
 Also, please install <span class="notranslate"> LVE Manager, LVE Utils and Fusion Passenger </span> by running the following command:
@@ -5846,6 +6373,9 @@ yum install cagefs
 
 * The first approach - remote usage of Node.js Interpreters of different versions
 * The second approach - remote usage of the cloudlinux-selector utility.
+
+* [Remote usage of Node.js interpreters](/cloudlinux_os_components/#remote-usage-of-node-js-interpreters)
+* [Remote usage of the cloudlinux-selector utility](/cloudlinux_os_components/#remote-usage-of-the-cloudlinux-selector-utility)
 
 #### Remote usage of Node.js interpreters
 
@@ -5936,6 +6466,8 @@ To apply all changes, restart the application.
 * See also [Node.js Selector UI](/lve_manager/#node-js-selector-2).
 
 ### Troubleshooting
+
+* [Debugging errors](/cloudlinux_os_components/#debugging-errors)
 
 #### Debugging errors
 
@@ -6087,6 +6619,7 @@ Installation process is done with custombuild script:
 <div class="notranslate">
 
 ```
+$ yum install liblsapi liblsapi-devel
 $ cd /usr/local/directadmin/custombuild
 $ ./build update
 $ ./build set php1_mode lsphp
@@ -6301,6 +6834,7 @@ Now mod_lsapi PRO is fully uninstalled.
 
 ### Configuration
 
+* [Configuration references](/cloudlinux_os_components/#configuration-references)
 
 In order to get mod_lsapi PRO work properly, you'll need to configure Apache. To do this, we use a separate _lsapi.conf_ file.
 
@@ -6382,6 +6916,8 @@ For installation guide mod_lsapi PRO please visit [Installation](/cloudlinux_os_
 * [lsapi_backend_common_own_log](/cloudlinux_os_components/#lsapi-backend-common-own-log)
 * [lsapi_backend_coredump](/cloudlinux_os_components/#lsapi-backend-coredump)
 * [lsapi_backend_accept_notify](/cloudlinux_os_components/#lsapi-backend-accept-notify)
+* [lsapi_backend_pgrp_max_reqs](/cloudlinux_os_components/#lsapi-backend-pgrp-max-reqs)
+* [lsapi_backend_pgrp_max_crashes](/cloudlinux_os_components/#lsapi-backend-pgrp-max-crashes)
  
 [Connection pool mode](/cloudlinux_os_components/#connection-pool-mode):
 * [lsapi_with_connection_pool](/cloudlinux_os_components/#lsapi-with-connection-pool)
@@ -6396,6 +6932,7 @@ For installation guide mod_lsapi PRO please visit [Installation](/cloudlinux_os_
 * [lsapi_criu_use_shm](/cloudlinux_os_components/#lsapi-criu-use-shm)
 * [lsapi_backend_semtimedwait](/cloudlinux_os_components/#lsapi-backend-semtimedwait)
 * [lsapi_reset_criu_on_apache_restart](/cloudlinux_os_components/#lsapi-reset-criu-on-apache-restart)
+* [lsapi_criu_debug](/cloudlinux_os_components/#lsapi-criu-debug)
 
 [PHP configuration management](/cloudlinux_os_components/#php-configuration-management):
 * [lsapi_process_phpini](/cloudlinux_os_components/#lsapi-process-phpini)
@@ -6683,6 +7220,28 @@ Switch LSAPI_ACCEPT_NOTIFY mode for lsphp. This option can be used both in Globa
 
 ---
 
+#### **lsapi_backend_pgrp_max_reqs**
+
+**Syntax** : lsapi_backend_prgrp_max_reqs [number]  
+**Default** : lsapi_backend_max_reqs 0  
+**Context** : httpd.conf, virtualhost  
+
+**Description** :  
+Controls how many requests a control process will process before it exits. Should be more or equal to 0. In the case of wrong format, a default value will be used. Optional, the default value is 0, which means an unlimited number of requests.
+
+---
+
+#### **lsapi_backend_pgrp_max_crashes**
+
+**Syntax** : lsapi_backend_prgrp_max_crashes [number]  
+**Default** : lsapi_backend_max_crashes 0  
+**Context** : httpd.conf, virtualhost
+
+**Description** :  
+Controls how many crashes of its worker processes a control process will detect before it exits. Should be more or equal to 0. In the case of wrong format, a default value will be used. Optional, the default value is 0, which means an unlimited number of crashes.
+
+---
+
 #### **Connection pool mode**
 
 #### **lsapi_with_connection_pool**
@@ -6799,6 +7358,17 @@ If this option set to Off then CRIU images won’t be recreated on Apache restar
 
 ----
 
+#### **lsapi_criu_debug**
+
+**Syntax**: lsapi_criu_debug On/Off  
+**Default**: lsapi_criu_debug Off  
+**Context**: httpd.conf, virtualhost  
+
+**Description** :  
+Enable/disable CRIU related debug logging.
+
+----
+
 #### **PHP configuration management**
 
 #### **lsapi_process_phpini**
@@ -6883,7 +7453,7 @@ If lsapi_enable_user_ini option is set to On, then enable/disable processing .us
 **Context** : httpd.conf, .htaccess  
 
 **Description** :  
-If set to On, always keep backend's response status as mod_php do. If set to Off, response status can be overridden by Apache as suphp do (in case of call via ErrorDocument directive).
+If set to On, always keep backend's response status as mod_php does. If set to Off, response status can be overridden by Apache as suphp does (in case of call via ErrorDocument directive).
 
 ---
 
@@ -7031,7 +7601,6 @@ See next table for more details:
 |Could not determine uid/gid for request |No need to check this log.  | UID/GID are not set in  virtualhost. Set <span class="notranslate"> lsapi_use_default_uid On </span> in lsapi.conf (it is <span class="notranslate"> On </span> by default since 0.1-98 version, this solution is for older versions).|
 |Own id for script file (/xxxx/xxx/xxxx) is xxx; should be xxxx |No need to check this log.  | File is not owned by the user PHP executed by. To overwrite (insecure), set <span class="notranslate"> lsapi_target_perm Off </span> in lsapi.conf. |
 |Could not connect to lsphp backend: connect to lsphp failed: 111 Connection refused |Entering jail error  | Check if СageFS enabled. Try running <span class="notranslate"> cagefsctl --remount-all. </span>|
-|connect_lsphp: connect to lsphp failed: tries XXX exceeded with timeout XXXXX  Could not connect to lsphp backend: connect to lsphp failed: 111 Connection refused |uid: (xxx/xxxxxxxx)  gid: (xxx/xxxxxxxxxx)  cmd: /usr/local/bin/lsphp | Check if <span class="notranslate"> /tmp/lshttpd (global /tmp </span> is not inside CageFS) exists and owner should be apache: apache for DirectAdmin, Plesk, iWorx, ISPManager and nobody for cPanel.|
 |Backend error on sending request(GET /XXXX HTTP/1.1); uri(/XXXX) content-length(0) (lsphp is killed?): ReceiveAckHdr: backend process reset connection: errno 104 (possibly memory limit for LVE ID XXXX too small) |uid: (xxx/xxxxxxxx)  gid: (xxx/xxxxxxxxxx)  cmd: /usr/local/bin/lsphp  | Increase PMEM limits for the user UID.|
 |Reached max children process limit: XX, extra: 0, current: XX, please increase LSAPI_CHILDREN.<br><br>Backend error on sending request(GET /XXXX HTTP/1.1); uri(/XXXX) content-length(0) (lsphp is killed?): ReceiveAckHdr: backend process reset connection: errno 104 (possibly memory limit for LVE ID XXXX too small) |uid: (xxx/xxxxxxxx)  gid: (xxx/xxxxxxxxxx)  cmd: /usr/local/bin/lsphp  | Increase value of <span class="notranslate"> lsapi_backend_children </span> for UID in vhost.conf or globally in lsapi.conf.|
 |fork() failed, please increase process limit: Cannot allocate memory<br><br>Backend error on sending request(GET /XXXX HTTP/1.1); uri(/XXXX) content-length(0) (lsphp is killed?): ReceiveAckHdr: backend process reset connection: errno 104 (possibly memory limit for LVE ID XXXX too small) |uid:(xxx); gid:(xxx); uid limit warning: EP should be < than NPROC, current EP: XX, NPROC: XX<br><br>uid: (xxx/xxxxxxxx) gid: (xxx/xxxxxxxxxx) cmd: /usr/local/bin/lsphp  | Increase NPROC limits for the UID. It should be greater than EP and <span class="notranslate"> lsapi_backend_children. </span>|
@@ -7064,7 +7633,7 @@ This will:<br>
 
 Check if SuExecUserGroup specified for virtual hosts. This parameter is used by mod_lsapi for user identification.
 
-**Could not connect to lsphp backend: connect(/tmp/lshttpd/lsapi_application-x-httpd-lsphp_XXX.sock) failed: 111 Connection refused**
+**Could not connect to lsphp backend: connect failed: 111 Connection refused**
 
 * Switch in lsapi.conf or <span class="notranslate"> mod_lsapi.conf </span> value to: <span class="notranslate"> lsapi_terminate_backends_on_exit Off </span>
 
@@ -7565,6 +8134,8 @@ should not be empty.
 
 ### LVE wrappers
 
+* [Placing programs inside LVE](/cloudlinux_os_components/#placing-programs-inside-lve)
+
 LVE wrappers are the set of tools that allow system administrator to run various users, programs & daemons within Lightweight Virtual Environment. This allows system administrator to have control over system resources such program can have. Additionally it prevents misbehaving programs running within LVE to drain system resources and slow down or take down the whole system. The tools are provided by lve-wrappers RPM.
 
 You can install them by running:
@@ -7646,6 +8217,24 @@ Directives which can be used by Apache with <span class="notranslate"> ITK </spa
 * <span class="notranslate">`LVEUser`</span> - overrides user to use to retrieve LVE ID, instead of AssignUserID
 
 ### HostingLimits module for Apache
+
+* [Additional notes](/cloudlinux_os_components/#additional-notes)
+* [Installation](/cloudlinux_os_components/#installation-4)
+* [Directives](/cloudlinux_os_components/#directives)
+  * [SecureLinks](/cloudlinux_os_components/#securelinks)
+  * [SkipErrors](/cloudlinux_os_components/#skiperrors)
+  * [AllowedHandlers](/cloudlinux_os_components/#allowedhandlers)
+  * [DenyHandlers](/cloudlinux_os_components/#denyhandlers)
+  * [LVEErrorCode](/cloudlinux_os_components/#lveerrorcode)
+  * [LVEid](/cloudlinux_os_components/#lveid)
+  * [LVEUser](/cloudlinux_os_components/#lveuser)
+  * [LVEUserGroupID](/cloudlinux_os_components/#lveusergroupid)
+  * [LVERetryAfter](/cloudlinux_os_components/#lveretryafter)
+  * [LVESitesDebug](/cloudlinux_os_components/#lvesitesdebug)
+  * [LVEParseMode](/cloudlinux_os_components/#lveparsemode)
+  * [LVEPathRegexp](/cloudlinux_os_components/#lvepathregexp)
+  * [LVELimitRecheckTimeout](/cloudlinux_os_components/#lvelimitrechecktimeout)
+  * [LVEUse429](/cloudlinux_os_components/#lveuse429)
 
 mod_hostinglimits works with existing <span class="notranslate"> CGI/PHP </span> modules, to put them into LVE context. In most cases the <span class="notranslate"> CGI/PHP </span> process will be placed into LVE with the ID of the user that sites belongs to. mod_hostinglimits detects the user from `SuexecUserGroup` (<span class="notranslate">suexec</span> module), <span class="notranslate">`SuPHP_UserGroup`</span> (from mod_suphp), `AssignUserID` (<span class="notranslate">MPM ITK</span>), <span class="notranslate">`RUidGid` (mod_ruid2 </span> ) directives.
 
@@ -8256,6 +8845,10 @@ Available for RPM based panels, EasyApache 4 and DirectAdmin.
 
 ### Redis support for HostingLimits
 
+* [LVERedisSocket](/cloudlinux_os_components/#lveredissocket)
+* [LVERedisAddr](/cloudlinux_os_components/#lveredisaddr)
+* [LVERedisTimeout](/cloudlinux_os_components/#lveredistimeout)
+
 Redis support provides a way to query Redis database for LVE id, based on domain in the HTTP request. Given a database like:
 
 <div class="notranslate">
@@ -8365,6 +8958,9 @@ LVERedisTimeout 120
 
 ### cPanel/WHM JSON API
 
+* [Parameters](/cloudlinux_os_components/#parameters)
+* [Manage reseller limits/users/packages via cPanel/WHM JSON API - JSONHandler](cloudlinux_os_components/#manage-reseller-limits-users-packages-via-cpanel-whm-json-api-jsonhandler)
+
 CloudLinux offers JSON API for [lvectl](/command-line_tools/#lvectl) via WHM. You can access it using the following URL:
 
 <div class="notranslate">
@@ -8446,9 +9042,27 @@ You can use the following commands that allow to specify user name instead of us
 |<span class="notranslate"> `list-user  ` </span> | List loaded LVEs, display username instead of user ID.|
 |<span class="notranslate"> `delete-user ` </span> | Delete LVE and set configuration for that user to defaults.|
 
-If the limits for users are set with <span class="notranslate"> cPanel LVE Extension </span>, then turnkey billing solutions can be applied (e.g. WHMCS).
+If the limits for users are set with <span class="notranslate"> cPanel LVE Extension</span>, then turnkey billing solutions can be applied (e.g. WHMCS).
+
+
+#### Manage reseller limits/users/packages via cPanel/WHM JSON API (JSONHandler)
+
+|  |  |  |
+|----|----|--|
+|**Action**|**lvectl command**|**JSONHandler**|
+|enable  reseller limits|<span class="notranslate">`lvectl set-reseller res1 --speed=35%`</span>|`https://IP:2087/cpsess_YOURTOKEN/cgi/CloudLinux.cgi/CloudLinux.cgi?cgiaction=jsonhandler&handler=set-reseller&lveid=res1&speed=30%&io=2048`|
+|disable reseller limits|<span class="notranslate">`lvectl remove-reseller res1`</span>|`https://IP:2087/cpsess_YOURTOKEN/cgi/CloudLinux.cgi/CloudLinux.cgi?cgiaction=jsonhandler&handler=remove-reseller&lveid=res1`|
+|set default limits for reseller|<span class="notranslate">`lvectl set-reseller-default res1 --speed=91%`</span>|`https://IP:2087/cpsess_YOURTOKEN/cgi/CloudLinux.cgi/CloudLinux.cgi?cgiaction=jsonhandler&handler=set-reseller-default&lveid=res1&speed=30%`|
+|set limits for package, created by reseller|<span class="notranslate">`lvectl package-set res1_pack1 --reseller res1 --speed=88%`</span>|`https://IP:2087/cpsess_YOURTOKEN/cgi/CloudLinux.cgi/CloudLinux.cgi?cgiaction=jsonhandler&handler=package-set&lveid=res1_pack1&reseller=res1&speed=30%`|
+|set limits for user, created by reseller|<span class="notranslate">`lvectl set-user r1user1 --reseller res1 --speed=77%`</span>|`https://IP:2087/cpsess_YOURTOKEN/cgi/CloudLinux.cgi/CloudLinux.cgi?cgiaction=jsonhandler&handler=set-user&lveid=r1user1&reseller=res1&speed=30%`|
+|set unlimited for user, created by reseller|<span class="notranslate">`lvectl set-user r1user1 --reseller res1 --unlimited`</span>|`https://IP:2087/cpsess_YOURTOKEN/cgi/CloudLinux.cgi/CloudLinux.cgi?cgiaction=jsonhandler&handler=set-user&lveid=r1user1&reseller=res1&unlimited`|
+
+
 
 ### mod_proctitle
+
+* [How to read mod_proctitle information](/cloudlinux_os_components/#how-to-read-mod-proctitle-information)
+* [Tuning parameters](/cloudlinux_os_components/#tuning-parameters)
 
 mod_proctitle is a module for gathering URL information per request. It is available only for Apache 2.4 now.
 
@@ -8691,6 +9305,8 @@ Nginx support is currently experimental.
 
 ### General information and requirements
 
+* [How does it work with CloudLinux?](/cloudlinux_os_components/#how-does-it-work-with-cloudlinux)
+
 This module is used by the Apache HTTP Server to switch to another user before executing CGI programs. The suEXEC feature provides users of the Apache HTTP Server with the ability to run CGI and SSI programs under user IDs different from the user ID of the calling web server (<span class="notranslate">apache/nobody</span>). Normally, when a CGI or SSI program executes, it runs as the same user who is running the web server.
 
 If we are talking about shared hosting where different accounts are launched on the same server, the installation of this module is necessary to ensure security.
@@ -8724,9 +9340,18 @@ Control panels such as cPanel, Plesk, and DirectAdmin add this directive to the 
 
 ### Installation
 
-The installation process varies depending on the control panel and Apache.
+The <span class="notranslate">`mod_suexec`</span> installation process varies depending on the control panel and Apache.
+
+* [Installing on cPanel servers with EasyApache 4](/cloudlinux_os_components/#installing-on-cpanel-servers-with-easyapache-4-2)
+  * [Via command line](/cloudlinux_os_components/#via-command-line)
+  * [Via administrator interface](/cloudlinux_os_components/#via-administrator-interface)
+* [Installing on Plesk servers](/cloudlinux_os_components/#installing-on-plesk-servers-2)
+* [Installing on DirectAdmin servers](/cloudlinux_os_components/#installing-on-directadmin-servers-2)
+* [Installing on servers with no control panel](/cloudlinux_os_components/#installing-on-servers-with-no-control-panel-2)
 
 #### Installing on cPanel servers with EasyApache 4
+
+#### Via command line
 
 1. Install `mod_suexec` through YUM package manager as follows:
 
@@ -8749,6 +9374,31 @@ The installation process varies depending on the control panel and Apache.
   $ service httpd restart
   ```
   </div>
+
+  :::tip Note
+  If you use CageFS + PHP Selector, you should run the <span class="notranslate">`cagefsctl --force-update`</span> command.
+  :::
+
+#### Via administrator interface
+
+1. Open EasyApache4 page.
+2. Click <span class="notranslate">_Customize_</span> for <span class="notranslate">_Currently installed Packages_</span>.
+
+  ![](/images/mod_suexec_admin_ui_1.png)
+
+3. Click <span class="notranslate">_Apache Modules_</span>. Find <span class="notranslate">`mod_suexec`</span> and click <span class="notranslate">_Yes_</span> to install it.
+
+  ![](/images/mod_suexec_admin_ui_2.png)
+
+4. Select <span class="notranslate">_Review_</span> and <span class="notranslate">_Provision_</span>.
+
+  ![](/images/mod_suexec_admin_ui_3.png)
+
+5. Wait while <span class="notranslate">_Provision_</span> will be finished.
+   
+   :::tip Note
+   If you use CageFS + PHP Selector, you should run the <span class="notranslate">`cagefsctl --force-update`</span> command.
+   :::
 
 #### Installing on Plesk servers
 

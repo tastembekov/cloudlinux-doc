@@ -2,7 +2,6 @@
 
 ## Hybrid Kernels
 
-
 <span class="notranslate">**CloudLinux 6 Hybrid kernel**</span>
 
 <span class="notranslate"> CloudLinux </span> 6 Hybrid Kernel is <span class="notranslate"> CloudLinux </span> 7 (3.10.0) kernel compiled for CloudLinux 6 OS. New 3.10 kernel features a set of performance and scalability improvements related to  <span class="notranslate"> IO </span> , networking and memory management, available in  <span class="notranslate"> CloudLinux 7 OS </span> . It also features improved  <span class="notranslate"> CPU </span>  scheduler for better overall system throughput and latency.
@@ -117,8 +116,12 @@ The protection requires setting multiple kernel options to be enabled.
 
 ### Symlink owner match protection
 
+* [fs.enforce_symlinksifowner](/cloudlinux_os_kernel/#fs-enforce-symlinksifowner)
+* [fs.symlinkown_gid](/cloudlinux_os_kernel/#fs-symlinkown-gid)
+* [fs.process_symlinks_by_task](/cloudlinux_os_kernel/#fs-process-symlinks-by-task)
 
-**_fs.enforce_symlinksifowner_**
+
+#### fs.enforce_symlinksifowner
 
 To protect against symlink attack where attacker tricks Apache web server to read some other user PHP config files, or other sensitive file, enable:
 <div class="notranslate">
@@ -149,7 +152,7 @@ When <span class="notranslate"> _fs.enforce_symlinksifowner_ </span> set to 1, p
 Please, note that <span class="notranslate"> _fs.enforce_symlinksifowner = 2_ </span> is deprecated and can cause issues for the system operation.
 <span class="notranslate"> </span>
 
-**_fs.symlinkown_gid_**
+#### fs.symlinkown_gid
 
 On standard <span class="notranslate"> RPM Apache </span> installation, <span class="notranslate"> Apache </span> is usually running under <span class="notranslate"> GID </span> 48.
 On <span class="notranslate"> cPanel </span> servers, <span class="notranslate"> Apache </span> is running under user nobody, <span class="notranslate"> GID </span> 99.
@@ -192,8 +195,43 @@ It is recommended to set _/proc/sys/fs/global_root_enable=0_ by default. If need
 Starting from lve-utils 3.0-21.2, fs.symlinkown_gid parameter values for httpd service user and fs.proc_super_gid for nagios service user is written to /etc/sysctl.d/90-cloudlinux.conf.
 :::
 
+#### fs.process_symlinks_by_task <Badge text="CloudLinux 7 hybrid"/> <Badge text="cPanel"/> 
 
-### Link traversal protection 
+To protect against symlink vulnerability where an attacker might get access to files out of the CageFS via cPanel tools: File Manager, WebDAV, Webmail, etc.
+
+When a symlink is accessed from cPanel tools (non-root user case) we check whether the current process UID matches the symlink target UID.
+
+To enable (the default value) the protection for CloudLinux 7 hybrid, set the <span class="notranslate">`fs.process_symlinks_by_task`</span> parameter to 1:
+<div class="notranslate">
+
+```
+fs.process_symlinks_by_task=1
+```
+</div>
+
+To disable the protection for CloudLinux 7 hybrid, set the <span class="notranslate">`fs.process_symlinks_by_task`</span> parameter to 0:
+<div class="notranslate">
+
+```
+fs.process_symlinks_by_task=0
+```
+</div>
+
+
+
+### Link traversal protection
+
+* [Known issues with fs.protected_symlinks_create=1 on cPanel servers](/cloudlinux_os_kernel/#known-issues-with-fs-protected-symlinks-create-1-on-cpanel-servers)
+
+
+:::warning Warning
+When used outside CageFS (from cPanel tools for instance), <span class="notranslate">`fs.protected_symlinks_create`</span> isn't sufficient for symlink protection.
+To fully protect symlink access in this case, use <span class="notranslate">`fs.process_symlinks_by_task=1`</span> in addition to <span class="notranslate">`fs.protected_symlinks_create=1`</span>.
+:::
+
+:::tip Note
+<span class="notranslate">`fs.process_symlinks_by_task`</span> is only available for CloudLinux 7 Hybrid for now and supports cPanel only. 
+:::
 
 
 <span class="notranslate"> [CageFS](/cloudlinux_os_components/#cagefs) </span> is extremely powerful at stopping most information disclosure attacks, where a hacker could read sensitive files like <span class="notranslate">_/etc/passwd_</span> .
@@ -216,6 +254,49 @@ fs.protected_hardlinks_create = 1
 ::: danger
 We do not recommend to use protected_symlinks option for cPanel users as it might break some of the cPanel functionality.
 :::   
+
+#### Known issues with fs.protected_symlinks_create=1 on cPanel servers
+
+Here are some examples of what may go wrong on cPanel servers. If <span class="notranslate">`fs.protected_symlinks_create=1`</span> is set on the server, it can cause the following issues:
+
+* `rsync` is failed
+
+If you use the `rsync` to copy/transfer files and they contain symlinks, you'll see the errors like these:
+
+<div class="notranslate">
+
+```
+"rsync error: some files could not be transferred (code 23)" and the transfer will be failed. 
+```
+</div> 
+
+ It affects `rsync` tasks as well as cPanel transfer tools.
+
+* backup extracting may not work. Errors during the restoration:
+  
+<div class="notranslate">
+
+```
+Error extracting /home/domain/backups/home.tar.gz : /bin/tar: .cagefs/tmp/mysql.sock: Cannot create symlink to `/var/lib/mysql/mysql.sock'.
+Permission denied. /bin/tar: .cagefs/tmp/.s.PGSQL.5432: Cannot create symlink to `/var/run/postgres/.s.PGSQL.5432': No such file or directory.
+```
+</div> 
+
+ Any backup for accounts (including cPanel backup) cannot be extracted.
+
+* `dmesg` is flooded with the <span class="notranslate">`may_create_sym_link`</span> messages like:
+
+<div class="notranslate">
+
+```
+may_create_sym_link: can't find ea-phpXX in cron
+may_create_sym_link: can't find ea-phpXX in ea-php-cli
+etc
+```
+</div> 
+
+ It's popping up each second and may increase the size of the <span class="notranslate">`/var/log/messages`</span> file.
+
 
 ::: tip Note
 Link Traversal Protection is disabled by default for the new CloudLinux OS installations/convertations.
@@ -515,7 +596,7 @@ Please keep in mind, that current implementation implies that one process is wri
 Using this options is dangerous, and might cause problems with <span class="notranslate">CloudLinux File Change API.</span>
 :::
 
-The kernel exposes the functionality to folder.
+The kernel exposes the functionality to /proc/sys/fs/datacycle/ folder.
 
 1. <span class="notranslate"> **enable** </span> - enable/disable the functionality. Write 1 to this file to enable, 0 to disable. If disabled, no events are coming to events file.
 
@@ -636,18 +717,20 @@ tuned-adm off
 
 ## Kernel config variables
 
-Starting from **lvemanager 4.0-25.5** , **lve-utils 3.0-21.2** , and **cagefs-6.1-26** , CloudLinux OS utilities can read/write kernel config variables from a custom config /etc/sysctl.d/90-cloudlinux.conf (earlier, the parameters were read/written only from sysctl.conf ).
+Starting from **lvemanager 4.0-25.5**, **lve-utils 3.0-21.2**, and **cagefs-6.1-26**, CloudLinux OS utilities can read/write kernel config variables from a custom config /etc/sysctl.d/90-cloudlinux.conf (earlier, the parameters were read/written only from sysctl.conf ).
 
-CloudLinux OS utilities get parameter by using _sysctl_ system utility. So for now, even if a config variable is not set in the _sysctl.conf_ and in the _/etc/sysctl.d_ config files, this variable will be read by _sysctl_ utility directly from _/proc/sys_ .
+CloudLinux OS utilities get parameter by using `sysctl` system utility. So for now, even if a config variable is not set in the `sysctl.conf` and in the `/etc/sysctl.d` config files, this variable will be read by `sysctl` utility directly from `/proc/sys`.
 
-If some kernel variable was set in _/etc/sysctl.d/90-cloudlinux.conf_ do
+If you changed some kernel variables in `/etc/sysctl.d/90-cloudlinux.conf` you need to apply these changes to the kernel parameter by running the command:
+
 <div class="notranslate">
 
 ```
 sysctl --system
 ```
 </div>
-to apply the parameters before reading and after writing.
+
+After that, the variable can be read by the sysctl utility.
 
 Starting from **cagefs-6.1-27**,  fs.proc_can_see_other_uid will be migrated (one time) from /etc/sysctl.conf into /etc/sysctl.d/90-cloudlinux.conf . If this variable is not set in either file, it will default to 0.
 It is strongly advised against setting this variable in 90-cloudlinux.conf . Define it in /etc/sysctl.conf or in some other config file with an index number greater than 90-cloudlinux.conf , e.g. `/etc/sysctl.d/95-custom.conf`.
@@ -835,6 +918,17 @@ By adding <span class="notranslate"> xen_blkfront.sda_is_xvda=0 </span> to kerne
 By default, this option is set to 1 in the kernel, and drives are detected as <span class="notranslate"> xvda </span> .
 This is needed only for CloudLinux 6 and <span class="notranslate"> Hybrid </span> kernels.
 
+## Umask behavior
+
+:::tip Note
+CloudLinux 6, CloudLinux 6 hybrid, CloudLinux 7, CloudLinux 7 hybrid kernels.
+::: 
+ 
+Starting from the kernel module **lve-kmod-2.0-10**, the behavior of umask is changed.
+
+Now, when entering LVE task's original umask value is preserved, instead of using LVE's umask value.
+This behavior is typical for all kernels: CloudLinux 6, CloudLinux 6 hybrid, CloudLinux 7, CloudLinux 7 hybrid kernels. 
+
 ## IO limits latency
 
 **[lve1.2.29+]**
@@ -983,7 +1077,7 @@ _For <span class="notranslate"> CloudLinux </span> 7:_
 ```
 </div>
 
-Also, add the following to <span class="notranslate"> _/etc/sysctl.conf_ </span> file to apply the same during boot:
+Also, add the following to <span class="notranslate">`/etc/sysctl.conf`</span> file to apply the same during boot:
 <div class="notranslate">
 
 ```
@@ -995,12 +1089,29 @@ kernel.memcg_oom_disable=1
 ## File system quotas
 
 
-In <span class="notranslate"> **Ext4** </span> file system, the process with enabled capability <span class="notranslate"> CAP_SYS_RESOURCE </span> is not checked on the quota exceeding by default. It allows userland utilities <span class="notranslate"> _selectorctl_ </span> and <span class="notranslate"> _cagefs_ </span> to operate without fails even if a user exceeds a quota.
+In <span class="notranslate">**Ext4**</span> file system, the process with enabled capability <span class="notranslate"> CAP_SYS_RESOURCE </span> is not checked on the quota exceeding by default. It allows userland utilities <span class="notranslate"> _selectorctl_ </span> and <span class="notranslate"> _cagefs_ </span> to operate without fails even if a user exceeds a quota.
 
-To disable quota checking in <span class="notranslate"> **XFS** </span> file system set <span class="notranslate"> _cap_res_quota_disable_ </span> option to 1 using the following command:
+To disable quota checking in <span class="notranslate">**XFS**</span> file system set <span class="notranslate">`cap_res_quota_disable`</span> option to 1 using the following command:
 <div class="notranslate">
 
 ```
 # echo 1 > /proc/sys/fs/xfs/cap_res_quota_disable
+```
+</div>
+
+## Enter LVE when using cPanel utilities <Badge text="cPanel"/> <Badge text="CloudLinux 7 hybrid"/> <Badge text="experimental" type="warn"/>
+
+cPanel tools might use more resources than desired, so to limit resource usage, you might want to enter the corresponding LVE when using cPanel tools on-behalf of a non-root user.
+
+This feature is considered experimental, as in this case there might be contention for LVE limits between cPanel tools and web-requests for a given user, which might not be suitable.
+
+The <span class="notranslate">`lve_setuid_enter`</span> parameter controls whether you want to enter the corresponding LVE when using cPanel tools on behalf of a non-root user.
+
+By default, the feature is disabled (0), to enable it, run the following for CloudLinux 7 hybrid:
+
+<div class="notranslate">
+
+```
+# echo 1 > /sys/module/kmodlve/parameters/lve_setuid_enter
 ```
 </div>
